@@ -32,13 +32,13 @@ function HeroBackdrop() {
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
       {/* grid + vignette */}
       <div className="panel-grid-bg absolute inset-0 opacity-90" />
-      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 70% 60% at 50% 38%, rgba(113,56,204,0.10), transparent 65%)" }} />
+      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 70% 60% at 50% 38%, rgba(113,56,204,0.16), transparent 65%)" }} />
 
       {/* radar sweep */}
       <div
         className="absolute left-1/2 top-[38%] h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full"
         style={{
-          background: "conic-gradient(from 0deg, rgba(157,107,255,0.18), transparent 22%, transparent 100%)",
+          background: "conic-gradient(from 0deg, rgba(122,74,255,0.26), transparent 22%, transparent 100%)",
           animation: "radar-sweep 7s linear infinite",
           maskImage: "radial-gradient(circle, black 0%, transparent 68%)",
           WebkitMaskImage: "radial-gradient(circle, black 0%, transparent 68%)",
@@ -46,16 +46,16 @@ function HeroBackdrop() {
       />
 
       {/* rain streaks */}
-      {Array.from({ length: 26 }, (_, i) => (
+      {Array.from({ length: 34 }, (_, i) => (
         <span
           key={i}
-          className="absolute w-px"
+          className="absolute w-[1.5px]"
           style={{
-            left: `${(i * 37.7) % 100}%`,
-            top: `-5%`,
-            height: `${14 + (i % 5) * 6}px`,
-            background: "linear-gradient(180deg, transparent, rgba(90,150,220,0.45))",
-            animation: `rain-fall ${1.1 + (i % 7) * 0.16}s linear ${(i % 9) * 0.32}s infinite`,
+            left: `${(i * 29.7) % 100}%`,
+            top: 0,
+            height: `${18 + (i % 5) * 7}px`,
+            background: "linear-gradient(180deg, transparent, rgba(64,101,191,0.6))",
+            animation: `rain-fall-page ${1.5 + (i % 7) * 0.18}s linear ${(i % 9) * 0.33}s infinite`,
           }}
         />
       ))}
@@ -138,21 +138,31 @@ export function LandingScreen() {
           <HeroBackdrop />
         </motion.div>
 
-        <motion.div style={{ y: heroTextY }} className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-6 py-24 text-center">
-          <motion.h1 variants={fadeUp} initial="hidden" animate="show" custom={0}
-            className="font-display max-w-4xl text-5xl font-bold leading-[1.04] tracking-tight md:text-7xl">
-            <span className="text-gradient-violet">FloodSense</span>{" "}
+        <motion.div style={{ y: heroTextY }} className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center px-6 py-24 text-left">
+          {/* eyebrow — numbered label, reference format */}
+          <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}
+            className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
+            <span>01</span>
+            <span className="h-px w-12 bg-muted-foreground/45" />
+            <span>Early-warning system</span>
+          </motion.div>
+
+          <motion.h1 variants={fadeUp} initial="hidden" animate="show" custom={1}
+            className="mt-6 font-display text-[44px] font-extrabold leading-[1.05] tracking-[-0.03em] text-foreground md:text-7xl">
+            FloodSense
+            <br />
             <span className="text-gradient-ombre">Hyderabad</span>
+            <span className="text-[1.12em]">.</span>
           </motion.h1>
 
-          <motion.p variants={fadeUp} initial="hidden" animate="show" custom={1}
-            className="mt-5 max-w-2xl text-lg text-muted-foreground md:text-xl">
+          <motion.p variants={fadeUp} initial="hidden" animate="show" custom={2}
+            className="mt-5 max-w-xl text-base text-muted-foreground md:text-lg">
             Predicting waterlogged streets before the water arrives.
           </motion.p>
 
           {/* stat row */}
-          <motion.div variants={fadeUp} initial="hidden" animate="show" custom={2}
-            className="mt-10 grid w-full max-w-3xl grid-cols-3 divide-x divide-border rounded-2xl border border-border bg-card/70 backdrop-blur">
+          <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3}
+            className="mt-10 grid w-full max-w-3xl grid-cols-3 divide-x divide-border rounded-2xl border border-border bg-card/80 backdrop-blur">
             {[
               { v: 25, suf: "", label: "monitored hotspots", sub: "Musi, nala & underpass corridors" },
               { v: 3, suf: " hr", label: "prediction window", sub: "1–3 hr lead time on risk alerts" },
@@ -168,8 +178,8 @@ export function LandingScreen() {
             ))}
           </motion.div>
 
-          <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3}
-            className="mt-10 flex flex-col items-center gap-4 sm:flex-row">
+          <motion.div variants={fadeUp} initial="hidden" animate="show" custom={4}
+            className="mt-10 flex flex-col items-start gap-4 sm:flex-row">
             <Magnetic>
               <Button size="lg" className="h-12 gap-2 rounded-xl px-8 text-base shadow-[0_10px_28px_-8px_rgba(113,56,204,0.55)]"
                 onClick={() => setView("map")} data-cursor="hover">

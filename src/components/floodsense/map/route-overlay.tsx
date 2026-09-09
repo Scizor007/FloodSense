@@ -68,8 +68,8 @@ function Pin({ lat, lng, label, kind }: { lat: number; lng: number; label: strin
         y={-20.5}
         textAnchor="middle"
         fontSize={10.5}
-        fill="#251f45"
-        fontFamily="var(--font-inter), sans-serif"
+        fill="#1a1025"
+        fontFamily="var(--font-jetbrains), monospace"
         letterSpacing={0.4}
       >
         {label}

@@ -212,7 +212,7 @@ function BootSplash() {
         transition={{ delay: 0.15 }}
         className="font-display text-lg font-semibold"
       >
-        FloodSense Hyderabad
+        FloodSense <span className="text-gradient-ombre">Hyderabad</span>
       </motion.p>
       <motion.div
         initial={{ opacity: 0 }}

@@ -90,3 +90,24 @@ Stage Summary:
 - Full light-purple theme delivered: very light lavender page backgrounds on all 6 screens + boot splash, white glass surfaces, Royal Purple brand + ombre hero text intact, risk scale preserved but light-legible.
 - Copy reads product-like; favicon, glows, and chrome match the light identity.
 - Dev server healthy at port 3000; user preview link unchanged.
+
+---
+Task ID: 4
+Agent: Super Z (main agent)
+Task: User feedback round: (1) theme went too light — "purple is not even visible", deepen to clearly visible lavender; (2) rain disappeared from hero background — restore; (3) switch ALL website text to JetBrains Mono; (4) restyle "FloodSense Hyderabad" hero text like the shared reference image (portfolio style: light lavender bg, near-black word, indigo→magenta gradient word, oversized period, numbered "01 —" label).
+
+Work Log:
+- Analyzed the 3 uploaded reference images via VLM (all the same portfolio "Let's build something remarkable." contact section): bg #F3EFFF, text #1A1025, gradient word #6B4CFF→#D045FF, extra-bold, left-aligned, "06 — CONTACT" numbered label, oversized period.
+- globals.css: palette deepened to visible lavender — background #E9E1F9, foreground #1A1025, card #F8F5FD, secondary #E0D4F6, borders #D3C3EF, sidebar #F1EAFA family, ring/focus #7138CC; scrollbar/selection/shimmer/grid-line/glass-border all strengthened; panel-grid 0.07→0.11.
+- Fonts: removed Inter + Space Grotesk from layout.tsx; JetBrains Mono (weights 400–800) is now --font-sans/--font-mono/--font-display — the entire site (headings, body, SVG text, buttons) renders in JetBrains Mono; removed Inter-only font-feature-settings; map/route-overlay SVG text switched to var(--font-jetbrains).
+- Hero restyled to reference format: left-aligned, eyebrow label "01 — Early-warning system" (number + thin rule + label), "FloodSense" solid dark, "Hyderabad" with .text-gradient-ombre rebuilt to linear-gradient(92deg, #6B4CFF→#8B5CF6→#D045FF), oversized trailing period (1.12em, dark), font-extrabold tracking -0.03em. Boot splash text gets the same FloodSense + gradient Hyderabad treatment.
+- Rain restored: hero streaks now 34× w-[1.5px] slate-indigo rgba(64,101,191,0.6) using new full-viewport `rain-fall-page` keyframe (-12vh→106vh) so rain covers the whole hero; map RainLayer stroke #3A90CF, width 1.4, opacity 0.3+intensity/110 capped 0.62.
+- Map basemap: svg bg #EDE7F9, grid #DCD0F0, cityGlow 0.13; favicon tile #E9E1F9; themeColor #E9E1F9; remaining #251F45 SVG hexes → #1A1025.
+- Verification (agent-browser 1440×900 + 390×844): body/h1 computed font = "JetBrains Mono" weight 800, document.fonts.check = true; all 6 screens VLM-confirmed "clearly visible light lavender" with no dark panels/breakage; map rain visible at 80mm + Run Prediction (12 severe hotspots escalated); hero zoom check confirms mono letterforms, dark FloodSense + gradient Hyderabad + period + 01 label + rain streaks (9/10 non-AI look); 0 console/page errors; mobile 390px no horizontal scroll; demo data reset to fresh state.
+
+Stage Summary:
+- Visible light-purple theme: every page is unmistakably lavender (bg #E9E1F9) with purple borders/accents and near-white cards, while staying light — the middle ground between "too dark" and "too light".
+- Whole site now typeset in JetBrains Mono (brand-consistent, code-editor aesthetic).
+- "FloodSense / Hyderabad." hero matches the shared reference: numbered label, dark word + indigo→magenta gradient word + oversized period, left-aligned portfolio format.
+- Rain animation restored in hero background (full-height) and on the map during rainfall simulation.
+- Dev server healthy at port 3000; preview link unchanged; tsc clean in src/.

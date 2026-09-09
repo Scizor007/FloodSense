@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "**Text Shown:**\n*   **Header:** \"06 — CONTACT\"\n*   **Headline:** \"Let's build **something** remarkable.\" (The word \"something\" is highlighted in a different color).\n*   **Body Text:** \"Open to internships, full-time roles, freelance projects and collaborations on full-stack & AI products. Drop a line — I usually reply within a day.\"\n\n**Visual Details:**\n*   **Background Color (Hex Estimate):** A very light, soft lavender or pale purple. Approximately `#F3EFFF` or `#F0EBFA`.\n*   **Text Colors:**\n    *   **Primary Headline (\"Let's build\", \"remarkable\"):** Very dark purple or near-black. Approx. `#1A1025` or `#1E1530`.\n    *   **Highlighted Word (\"something\"):** Vibrant gradient purple (shifting from blue-purple to magenta). Approx. `#6B46C1` to `#D946EF`.\n    *   **Body/Small Text:** Dark grey/purple. Approx. `#4A4A4A` or `#553C66`.\n\n**Context:**\nThis image is a **design/portfolio reference**. It is a generic, high-quality UI/UX design template commonly used for personal portfolio websites or agency contact pages. There is no text or imagery indicating it relates specifically to 'FloodSense Hyderabad'.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1788949100,
+  "id": "202609091818076f15e5527bce4f9f",
+  "model": "glm-5v-turbo",
+  "object": "chat.completion",
+  "request_id": "202609091818076f15e5527bce4f9f",
+  "usage": {
+    "completion_tokens": 301,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 1279,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1580
+  }
+}

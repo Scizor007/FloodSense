@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "Yes, there are visible blue diagonal rain streaks animated over the map area.\nYes, the risk markers are escalated, showing 12 severe hotspots at 97% risk.\nYes, the overall look is a light, readable purple theme.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1788949597,
+  "id": "2026090918263561043ab329de482d",
+  "model": "glm-5v-turbo",
+  "object": "chat.completion",
+  "request_id": "2026090918263561043ab329de482d",
+  "usage": {
+    "completion_tokens": 50,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 1721,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1771
+  }
+}

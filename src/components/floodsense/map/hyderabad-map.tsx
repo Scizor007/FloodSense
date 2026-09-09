@@ -34,14 +34,14 @@ const RAIN_LINES = Array.from({ length: 42 }, (_, i) => ({
 
 function RainLayer({ intensity }: { intensity: number }) {
   if (intensity <= 0) return null;
-  const opacity = Math.min(0.55, 0.18 + intensity / 130);
+  const opacity = Math.min(0.62, 0.3 + intensity / 110);
   return (
     <g opacity={opacity} style={{ pointerEvents: "none" }}>
       {RAIN_LINES.map((l, i) => (
         <line
           key={i}
           x1={l.x} y1={l.y} x2={l.x - 8} y2={l.y + 26}
-          stroke="#5bb8e8" strokeWidth={1.1} strokeLinecap="round"
+          stroke="#3a90cf" strokeWidth={1.4} strokeLinecap="round"
           style={{
             animation: `rain-fall ${l.dur}s linear ${l.delay}s infinite`,
           }}
@@ -129,7 +129,7 @@ function HotspotMarker({
           scale: selected ? 1.3 : hovered ? 1.18 : 1,
         }}
         transition={{ type: "spring", stiffness: 260, damping: 22 }}
-        stroke={selected ? "#251f45" : "#ffffff"}
+        stroke={selected ? "#1a1025" : "#ffffff"}
         strokeWidth={selected ? 2.6 : 2.2}
         style={{ transformBox: "fill-box", transformOrigin: "center", filter: "drop-shadow(0 1px 2px rgba(37,31,69,0.35))" }}
       />
@@ -164,8 +164,8 @@ function HotspotMarker({
             textAnchor="middle"
             fontSize={10}
             fontWeight={600}
-            fill="#251f45"
-            fontFamily="var(--font-inter), sans-serif"
+            fill="#1a1025"
+            fontFamily="var(--font-jetbrains), monospace"
           >
             {h.name}
           </text>
@@ -208,7 +208,7 @@ export function HyderabadMap({
       <svg
         viewBox={viewBox}
         className="h-full w-full"
-        style={{ background: "#f3effb" }}
+        style={{ background: "#ede7f9" }}
         onClick={() => onSelect?.(null)}
       >
         <defs>
@@ -226,11 +226,11 @@ export function HyderabadMap({
             <stop offset="100%" stopColor="#0891b2" />
           </linearGradient>
           <radialGradient id="cityGlow" cx="50%" cy="50%" r="55%">
-            <stop offset="0%" stopColor="#7138cc" stopOpacity="0.10" />
+            <stop offset="0%" stopColor="#7138cc" stopOpacity="0.13" />
             <stop offset="100%" stopColor="#7138cc" stopOpacity="0" />
           </radialGradient>
           <pattern id="mapGrid" width="50" height="50" patternUnits="userSpaceOnUse">
-            <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#e6def7" strokeWidth="1" />
+            <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#dcd0f0" strokeWidth="1" />
           </pattern>
           <pattern id="floodHatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
             <rect width="8" height="8" fill="#ef4444" opacity="0.05" />

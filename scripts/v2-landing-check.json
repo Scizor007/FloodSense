@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "1) **Background Color:** Yes, it is a clearly visible, distinct light purple/lavender (not near-white).\n2) **Falling Rain:** Yes, thin blue diagonal streaks are visible across the hero background.\n3) **Headline:** 'FloodSense' is dark/black. 'Hyderabad' features a clear indigo-to-magenta gradient. There is a black period at the end. The text is left-aligned with a small '01 — EARLY-WARNING SYSTEM' label above.\n4) **Typography:** No, the typography is a clean geometric sans-serif (resembling Inter or similar), not a monospace font.\n5) **Layout Issues:** None. The layout is clean with no overflow or unreadable text.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1788949507,
+  "id": "2026090918250315c6e4d2dbc642c7",
+  "model": "glm-5v-turbo",
+  "object": "chat.completion",
+  "request_id": "2026090918250315c6e4d2dbc642c7",
+  "usage": {
+    "completion_tokens": 153,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 1840,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1993
+  }
+}
