@@ -208,7 +208,7 @@ export function HyderabadMap({
       <svg
         viewBox={viewBox}
         className="h-full w-full"
-        style={{ background: "#ede7f9" }}
+        style={{ background: "#e3d9f5" }}
         onClick={() => onSelect?.(null)}
       >
         <defs>
@@ -230,7 +230,7 @@ export function HyderabadMap({
             <stop offset="100%" stopColor="#7138cc" stopOpacity="0" />
           </radialGradient>
           <pattern id="mapGrid" width="50" height="50" patternUnits="userSpaceOnUse">
-            <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#dcd0f0" strokeWidth="1" />
+            <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#d7caf0" strokeWidth="1" />
           </pattern>
           <pattern id="floodHatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
             <rect width="8" height="8" fill="#ef4444" opacity="0.05" />

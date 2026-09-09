@@ -10,6 +10,7 @@ import { HOTSPOTS } from "@/lib/flood/geo";
 import { severityFromScore } from "@/lib/flood/risk";
 import { RISK_META } from "@/lib/flood/types";
 import { Magnetic, CountUp } from "../shared/magnetic";
+import { HyderabadMap } from "../map/hyderabad-map";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
@@ -124,6 +125,8 @@ const STEPS = [
 
 export function LandingScreen() {
   const setView = useFloodStore((s) => s.setView);
+  const hotspots = useFloodStore((s) => s.hotspots);
+  const peak = [...hotspots].sort((a, b) => b.riskScore - a.riskScore)[0];
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const bgY = useTransform(scrollYProgress, [0, 1], [0, 120]);
@@ -138,31 +141,32 @@ export function LandingScreen() {
           <HeroBackdrop />
         </motion.div>
 
-        <motion.div style={{ y: heroTextY }} className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center px-6 py-24 text-left">
-          {/* eyebrow — numbered label, reference format */}
-          <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}
-            className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
-            <span>01</span>
-            <span className="h-px w-12 bg-muted-foreground/45" />
-            <span>Early-warning system</span>
-          </motion.div>
+        <motion.div style={{ y: heroTextY }} className="relative z-10 mx-auto grid w-full max-w-7xl flex-1 items-center gap-12 px-6 py-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
+          <div>
+            {/* eyebrow — numbered label, reference format */}
+            <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}
+              className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
+              <span>01</span>
+              <span className="h-px w-12 bg-muted-foreground/45" />
+              <span>Early-warning system</span>
+            </motion.div>
 
-          <motion.h1 variants={fadeUp} initial="hidden" animate="show" custom={1}
-            className="mt-6 font-display text-[44px] font-extrabold leading-[1.05] tracking-[-0.03em] text-foreground md:text-7xl">
-            FloodSense
-            <br />
-            <span className="text-gradient-ombre">Hyderabad</span>
-            <span className="text-[1.12em]">.</span>
-          </motion.h1>
+            <motion.h1 variants={fadeUp} initial="hidden" animate="show" custom={1}
+              className="mt-5 font-display text-[42px] font-extrabold leading-[1.04] tracking-[-0.03em] text-foreground md:text-7xl lg:text-[78px]">
+              FloodSense
+              <br />
+              <span className="text-gradient-ombre">Hyderabad</span>
+              <span className="text-[1.12em]">.</span>
+            </motion.h1>
 
-          <motion.p variants={fadeUp} initial="hidden" animate="show" custom={2}
-            className="mt-5 max-w-xl text-base text-muted-foreground md:text-lg">
-            Predicting waterlogged streets before the water arrives.
-          </motion.p>
+            <motion.p variants={fadeUp} initial="hidden" animate="show" custom={2}
+              className="mt-4 max-w-xl text-base text-muted-foreground md:text-lg">
+              Predicting waterlogged streets before the water arrives.
+            </motion.p>
 
-          {/* stat row */}
-          <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3}
-            className="mt-10 grid w-full max-w-3xl grid-cols-3 divide-x divide-border rounded-2xl border border-border bg-card/80 backdrop-blur">
+            {/* stat row */}
+            <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3}
+              className="mt-8 grid w-full grid-cols-3 divide-x divide-border rounded-2xl border border-border bg-card/80 backdrop-blur">
             {[
               { v: 25, suf: "", label: "monitored hotspots", sub: "Musi, nala & underpass corridors" },
               { v: 3, suf: " hr", label: "prediction window", sub: "1–3 hr lead time on risk alerts" },
@@ -179,7 +183,7 @@ export function LandingScreen() {
           </motion.div>
 
           <motion.div variants={fadeUp} initial="hidden" animate="show" custom={4}
-            className="mt-10 flex flex-col items-start gap-4 sm:flex-row">
+            className="mt-8 flex flex-col items-start gap-4 sm:flex-row">
             <Magnetic>
               <Button size="lg" className="h-12 gap-2 rounded-xl px-8 text-base shadow-[0_10px_28px_-8px_rgba(113,56,204,0.55)]"
                 onClick={() => setView("map")} data-cursor="hover">
@@ -191,6 +195,41 @@ export function LandingScreen() {
               onClick={() => document.getElementById("how-it-works")?.scrollIntoView({ behavior: "smooth" })}>
               See how it works
             </Button>
+          </motion.div>
+          </div>
+
+          {/* live map snapshot — fills the right side */}
+          <motion.div variants={fadeUp} initial="hidden" animate="show" custom={5}
+            className="relative mt-2 lg:mt-0">
+            <div className="glass-card group relative cursor-pointer overflow-hidden rounded-3xl transition-shadow duration-300 hover:shadow-[0_24px_60px_-24px_rgba(66,32,130,0.45)]"
+              data-cursor="hover" onClick={() => setView("map")}>
+              <div className="flex items-center justify-between border-b border-border/70 bg-card/60 px-5 py-3.5">
+                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">City risk map</span>
+                <span className="flex items-center gap-1.5 font-mono text-[10px] text-muted-foreground">
+                  <span className="h-1.5 w-1.5 rounded-full bg-risk-low" />
+                  {hotspots.length} zones monitored
+                </span>
+              </div>
+              <HyderabadMap
+                hotspots={hotspots}
+                className="h-[300px] sm:h-[360px] lg:h-[430px]"
+                onSelect={(id) => id && setView("map")}
+              />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center bg-gradient-to-t from-background/80 via-background/30 to-transparent pb-4 pt-12 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <span className="rounded-full border border-border bg-card px-4 py-1.5 font-mono text-[11px] font-medium text-foreground shadow-lg">
+                  Open live map →
+                </span>
+              </div>
+            </div>
+
+            {peak && (
+              <motion.div variants={fadeUp} initial="hidden" animate="show" custom={6}
+                className="glass-card absolute -bottom-5 -left-4 hidden items-center gap-3 rounded-2xl px-4 py-3 md:flex">
+                <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-risk-severe" style={{ boxShadow: "0 0 10px rgba(220,38,38,0.55)" }} />
+                <span className="font-mono text-[9.5px] uppercase tracking-[0.16em] text-muted-foreground">peak right now</span>
+                <span className="font-display text-sm font-bold text-foreground">{peak.name.split(",")[0]} · {peak.riskScore}%</span>
+              </motion.div>
+            )}
           </motion.div>
         </motion.div>
 

@@ -111,3 +111,22 @@ Stage Summary:
 - "FloodSense / Hyderabad." hero matches the shared reference: numbered label, dark word + indigo→magenta gradient word + oversized period, left-aligned portfolio format.
 - Rain animation restored in hero background (full-height) and on the map during rainfall simulation.
 - Dev server healthy at port 3000; preview link unchanged; tsc clean in src/.
+
+---
+Task ID: 5
+Agent: Super Z (main agent)
+Task: User feedback round: (1) background "a little more darker" than #E9E1F9; (2) hero "looks zoomed out, not pleasing" (shared screenshot: content crammed left, dead right side, sparse, small headline).
+
+Work Log:
+- VLM analysis of the user's screenshot: hero content clustered in left ~40%, right 60% dead zone of floating dots, oversized vertical whitespace, stats an isolated island — classic "zoomed out" feel.
+- Palette deepened one step in globals.css (root + .dark): background #E1D6F4, secondary #D5C6F0, muted #D9CDF1, borders #C8B7EB, sidebar #EAE3F8, input #BDA9E4; cards stay #F8F5FE so surfaces pop more against the darker bg.
+- Hero rebuilt as split layout (landing-screen.tsx): max-w-7xl grid lg:grid-cols-[1.05fr_0.95fr] — copy column left, LIVE MAP SNAPSHOT right (HyderabadMap fed by store hotspots in a glass-card with "City risk map / N zones monitored" header, h-430px, hover reveals "Open live map →" pill, click navigates setView("map"), marker clicks also navigate).
+- Floating "peak right now" chip (glass-card, -bottom-5 -left-4, red dot + live top hotspot name/risk from store sort) — hidden below md.
+- Headline upsized: lg:text-[78px] (JetBrains Mono extrabold); vertical rhythm tightened (mt-6→mt-5, mt-5→mt-4, mt-10→mt-8, py-24→py-20); stats row now w-full (anchored, no island look); CTA row items-start.
+- Map svg bg #E3D9F5 + grid #D7CAF0; themeColor + favicon tile #E1D6F4.
+- Verification (agent-browser 1440×900 + 390×844): VLM confirms balanced two-column hero, right side filled with polished map card, "designed and premium", sparse feel "completely resolved"; background "sophisticated medium-light purple"; rain still visible; map screen readable; mobile stacks map card below text, 390=390 no overflow; card-click → map view works (h1 "Waterlogging Risk Map"); 0 errors; demo reset.
+
+Stage Summary:
+- Background one step darker (#E1D6F4) while staying light — purple unmistakably present.
+- Hero fixed: split layout with live map snapshot card + floating peak-risk chip + 78px headline + tighter rhythm — no more dead right side / zoomed-out feel.
+- All interactions intact; dev server healthy at port 3000; tsc clean in src/.

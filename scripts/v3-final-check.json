@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "1. **Background:** Yes, both use a pleasant medium-light purple.\n2. **Desktop Map:** Yes, it is readable, balanced, and has no layout issues.\n3. **Mobile:** Yes, the hero is clear, the map card is stacked below the text, and there is no overflow or cutoff.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1788951206,
+  "id": "20260909185322b028ec7fb6334aa4",
+  "model": "glm-5v-turbo",
+  "object": "chat.completion",
+  "request_id": "20260909185322b028ec7fb6334aa4",
+  "usage": {
+    "completion_tokens": 65,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 2139,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 2204
+  }
+}
