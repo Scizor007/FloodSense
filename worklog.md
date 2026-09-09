@@ -150,3 +150,21 @@ Stage Summary:
 - Site text now Inter 400/22px/1.65 per user spec; Inter Black display headline; JetBrains Mono demoted to data/number accents only.
 - Dev server runs as a double-fork daemon (scripts/daemon-dev.py, PID in dev-server.pid) — restart with: rm -rf .next && python3 scripts/daemon-dev.py.
 - All 6 screens verified; tsc clean in src; preview link unchanged.
+
+---
+Task ID: 7
+Agent: Super Z (main agent)
+Task: User request — "move the historical calendar to the bottom and change its name to just Calendar". (Context note: the Historical Flood Calendar feature itself — mock dataset, service layer, 10 components — was implemented in a prior context window whose worklog entry was lost to the context overflow; verified present under src/components/floodsense/historical/ + src/lib/flood/historical-{data,service}.ts before this task.)
+
+Work Log:
+- app-shell.tsx NAV array: moved the historical entry from position 3 to LAST (bottom) of the nav — now after Alerts; sidebar, mobile chips, and top-bar label all derive from this array, so all three updated at once.
+- Renamed the view's display name: nav label "Historical" → "Calendar" (desc "Flood calendar" → "Flood history" to avoid label/desc redundancy); TopBar now shows "CALENDAR".
+- historical-screen.tsx: ScreenHeader title "Historical Flood Calendar" → "Calendar" (eyebrow kept as "Historical analysis" to preserve context; desc unchanged).
+- README.md: entry-points row updated to 'sidebar "Calendar" (bottom of the nav) + "View Historical Data" in the map hotspot panel'.
+- Internal view id "historical", store fields (historicalLocationId, openHistoricalLocation) and file names intentionally unchanged — display-name-only rename, no breaking changes.
+- Verified: bunx tsc --noEmit clean in src/ (only pre-existing errors in examples/ and skills/); dev server (PID 12420, daemon) recompiled successfully; GET / 200.
+
+Stage Summary:
+- Calendar view now sits at the bottom of the nav in both sidebar and mobile chip row, labeled "Calendar" everywhere it is named in the UI.
+- Screen headline reads "Calendar"; README docs match.
+- Zero functional changes — data, interactions, and all other views untouched.

@@ -3,7 +3,7 @@
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Radar, LocateFixed, Camera, ClipboardList, BellRing, Droplets,
+  Radar, LocateFixed, Camera, ClipboardList, BellRing, Droplets, CalendarDays,
   RefreshCcw, ChevronRight,
 } from "lucide-react";
 import { useFloodStore } from "@/lib/flood/store";
@@ -11,6 +11,7 @@ import type { View } from "@/lib/flood/types";
 import { LandingScreen } from "./landing/landing-screen";
 import { MapView } from "./map/map-view";
 import { AroundMeScreen } from "./around-me/around-me-screen";
+import { HistoricalScreen } from "./historical/historical-screen";
 import { ReportScreen } from "./report/report-screen";
 import { ReportsFeedScreen } from "./reports-feed/reports-feed-screen";
 import { AlertsScreen } from "./alerts/alerts-screen";
@@ -22,6 +23,7 @@ const NAV: { view: View; label: string; desc: string; icon: React.ElementType }[
   { view: "report", label: "Report Flooding", desc: "Community flow", icon: Camera },
   { view: "feed", label: "Reports Feed", desc: "Authority view", icon: ClipboardList },
   { view: "alerts", label: "Alerts", desc: "Citizen channel", icon: BellRing },
+  { view: "historical", label: "Calendar", desc: "Flood history", icon: CalendarDays },
 ];
 
 function Logo({ compact = false }: { compact?: boolean }) {
@@ -187,6 +189,7 @@ function MobileNav({ view, unread }: { view: View; unread: number }) {
 const SCREENS: Record<Exclude<View, "landing">, React.ComponentType> = {
   map: MapView,
   around: AroundMeScreen,
+  historical: HistoricalScreen,
   report: ReportScreen,
   feed: ReportsFeedScreen,
   alerts: AlertsScreen,

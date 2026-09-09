@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Radar, Play, RotateCcw, MapPin, Route, X, Activity, Droplets, ChevronRight } from "lucide-react";
+import { Radar, Play, RotateCcw, MapPin, Route, X, Activity, Droplets, ChevronRight, CalendarDays } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import {
@@ -44,7 +44,7 @@ function buildRoute(h: HotspotLive): RouteOverlayData {
 }
 
 export function MapView() {
-  const { hotspots, scenario, predictionRanAt, selectedHotspotId, selectHotspot, runPrediction, resetScenario } =
+  const { hotspots, scenario, predictionRanAt, selectedHotspotId, selectHotspot, runPrediction, resetScenario, openHistoricalLocation } =
     useFloodStore();
   const { toast } = useToast();
 
@@ -370,6 +370,16 @@ export function MapView() {
                     >
                       <Route className="h-4 w-4" />
                       Suggest Alternate Route
+                    </Button>
+
+                    <Button
+                      variant="outline"
+                      className="mt-2 w-full gap-2"
+                      onClick={() => openHistoricalLocation(selected.id)}
+                      data-cursor="hover"
+                    >
+                      <CalendarDays className="h-4 w-4" />
+                      View Historical Data
                     </Button>
                   </ScrollArea>
                 </motion.div>

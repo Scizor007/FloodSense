@@ -4,6 +4,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { baselineLive, applyScenario } from "./risk";
 import { MOCK_REPORTS, MOCK_ALERTS } from "./mock-data";
+import { DEFAULT_HISTORICAL_LOCATION_ID } from "./historical-data";
 import type {
   View,
   HotspotLive,
@@ -23,9 +24,12 @@ interface FloodState {
   alerts: FloodAlert[];
   userLocalityId: string;
   lastSync: number;
+  /** Historical Flood Calendar — selected location (months stay local) */
+  historicalLocationId: string;
 
   setView: (v: View) => void;
   selectHotspot: (id: string | null) => void;
+  openHistoricalLocation: (locationId: string) => void;
   runPrediction: (scenario: RainfallScenario) => HotspotLive[];
   resetScenario: () => void;
   addReport: (r: FloodReport) => void;
@@ -51,9 +55,12 @@ export const useFloodStore = create<FloodState>()(
       alerts: MOCK_ALERTS,
       userLocalityId: "hitec",
       lastSync: Date.now(),
+      historicalLocationId: DEFAULT_HISTORICAL_LOCATION_ID,
 
       setView: (v) => set({ view: v }),
       selectHotspot: (id) => set({ selectedHotspotId: id }),
+      openHistoricalLocation: (locationId) =>
+        set({ view: "historical", historicalLocationId: locationId }),
 
       runPrediction: (scenario) => {
         const next = applyScenario(scenario);
@@ -140,6 +147,7 @@ export const useFloodStore = create<FloodState>()(
           alerts: MOCK_ALERTS,
           userLocalityId: "hitec",
           lastSync: Date.now(),
+          historicalLocationId: DEFAULT_HISTORICAL_LOCATION_ID,
         }),
     }),
     {

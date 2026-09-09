@@ -5,6 +5,7 @@ export type View =
   | "landing"
   | "map"
   | "around"
+  | "historical"
   | "report"
   | "feed"
   | "alerts";
