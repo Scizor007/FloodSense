@@ -4,11 +4,9 @@ import { useEffect, useState, useSyncExternalStore } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Radar, LocateFixed, Camera, ClipboardList, BellRing, Droplets,
-  RefreshCcw, Radio, ChevronRight,
+  RefreshCcw, ChevronRight,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useFloodStore } from "@/lib/flood/store";
-import { timeAgo } from "@/lib/flood/risk";
 import type { View } from "@/lib/flood/types";
 import { LandingScreen } from "./landing/landing-screen";
 import { MapView } from "./map/map-view";
@@ -93,26 +91,13 @@ function Sidebar({ view, unread }: { view: View; unread: number }) {
                   {unread}
                 </span>
               )}
-              {item.view === "feed" && (
-                <span className="rounded border border-primary/40 bg-primary/10 px-1.5 py-0.5 text-[8.5px] font-semibold uppercase tracking-wider text-primary">
-                  GHMC
-                </span>
-              )}
               <ChevronRight className={`h-3.5 w-3.5 transition-transform ${active ? "opacity-60" : "opacity-0 group-hover:translate-x-0.5 group-hover:opacity-40"}`} />
             </motion.button>
           );
         })}
       </nav>
 
-      <div className="space-y-3 px-4 pb-5">
-        <div className="rounded-xl border border-border bg-secondary/40 p-3">
-          <p className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-            <Radio className="h-3 w-3 text-risk-low" /> model status
-          </p>
-          <p className="mt-1.5 text-[11px] text-muted-foreground">
-            v0.9 pilot · <span className="font-medium text-risk-low">operational</span>
-          </p>
-        </div>
+      <div className="px-4 pb-5 pt-3">
         <button
           onClick={resetDemo}
           className="flex w-full items-center gap-1.5 rounded-lg px-2 py-1.5 text-[11px] text-muted-foreground/70 transition-colors hover:text-foreground"
@@ -127,7 +112,6 @@ function Sidebar({ view, unread }: { view: View; unread: number }) {
 
 function TopBar({ view, unread }: { view: View; unread: number }) {
   const [clock, setClock] = useState("--:--");
-  const lastSync = useFloodStore((s) => s.lastSync);
   const setView = useFloodStore((s) => s.setView);
 
   useEffect(() => {
@@ -152,16 +136,6 @@ function TopBar({ view, unread }: { view: View; unread: number }) {
       </div>
 
       <div className="ml-auto flex items-center gap-2.5">
-        <span className="hidden items-center gap-2 rounded-full border border-risk-low/30 bg-risk-low/5 px-3 py-1.5 text-[11px] font-medium text-risk-low md:flex">
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute h-full w-full animate-ping rounded-full bg-risk-low opacity-70" />
-            <span className="relative h-1.5 w-1.5 rounded-full bg-risk-low" />
-          </span>
-          IMD feed · LIVE
-        </span>
-        <span className="hidden font-mono text-[10.5px] text-muted-foreground md:block">
-          synced {timeAgo(lastSync)}
-        </span>
         <button
           onClick={() => setView("alerts")}
           data-cursor="hover"
@@ -253,14 +227,6 @@ function BootSplash() {
           transition={{ duration: 1.1, ease: "easeInOut" }}
         />
       </motion.div>
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.4 }}
-        className="mt-3 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground"
-      >
-        initialising city model…
-      </motion.p>
     </div>
   );
 }

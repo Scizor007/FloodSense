@@ -43,7 +43,7 @@ function AlertBubble({ alert, index }: { alert: FloodAlert; index: number }) {
         style={{ background: meta.color, boxShadow: `0 0 12px ${meta.color}80` }}
       />
       <div
-        className="ml-3 flex-1 rounded-2xl rounded-tl-md border border-border bg-[#151224] p-4"
+        className="ml-3 flex-1 rounded-2xl rounded-tl-md border border-border bg-[#241f42] p-4"
         style={{ boxShadow: `inset 3px 0 0 -1px ${meta.color}55` }}
       >
         <div className="mb-2 flex items-center gap-2">

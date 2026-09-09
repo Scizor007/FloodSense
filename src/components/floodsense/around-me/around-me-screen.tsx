@@ -72,7 +72,7 @@ export function AroundMeScreen() {
       setUserLocality("moosarambagh");
       toast({
         title: "Location detected",
-        description: "Approx. Moosarambagh, Amberpet — GPS mock for demo",
+        description: "Approx. Moosarambagh, Amberpet",
       });
     }, 1100);
   };

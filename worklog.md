@@ -46,3 +46,22 @@ Verification (agent-browser, full journey):
 Stage Summary:
 - Deliverable: complete FloodSense Hyderabad app running at port 3000 (preview link provided to user), all 6 screens interactive, mock data structured for clean backend swap (types + store actions), localStorage persistence + reset for demos.
 - Key decisions: custom SVG basemap instead of Leaflet (zero external deps for live-demo reliability, full purple theme control, geo-projected hotspot data stays API-swappable); purple #7138CC as dominant brand color with the functional risk scale preserved; single-route SPA (view-state navigation) per sandbox constraint that only / is user-visible.
+
+---
+Task ID: 2
+Agent: Super Z (main agent)
+Task: User-requested refinements to FloodSense Hyderabad: (1) lighten the too-dark theme, (2) remove AI-looking chrome text, (3) smooth purple→white/black hover transition on primary buttons.
+
+Work Log:
+- Lightened full palette in src/app/globals.css (:root + .dark): background #0b0812→#1a1530, card #13101f→#221d3a, popover/secondary/muted/accent/borders/sidebar all lifted ~1.5 tones; glass-card, shimmer, scrollbar, panel-grid updated to match.
+- Lightened ~30 hardcoded SVG colors in hyderabad-map.tsx (map bg #0d0a18→#1e1936, roads/labels/localities/grid), route-overlay.tsx, alerts-screen.tsx (bubble bg #151224→#241f42), risk-widgets.tsx (gauge track/severity off-segment), layout.tsx themeColor.
+- Removed AI-looking chrome: sidebar "model status · v0.9 pilot · operational" card, GHMC nav badge, topbar "IMD feed · LIVE" chip + "synced" text, boot splash "initialising city model…", landing "GHMC Smart Cities pilot · monsoon 2025" chip, footer "demo dataset · civic-tech prototype", feed "Operator: GHMC Ward Ops" chip, map "ORS-ready"/"IMD-style"/"HYDERABAD CITY MODEL · OSM/ORS" jargon, around-me "GPS mock for demo" toast tail; simplified prediction log lines + eyebrows.
+- button.tsx default variant now "hover:bg-white hover:text-black" with transition-all duration-300 ease-out + subtle white glow — applies to View Live Map, Run Prediction, Suggest Alternate Route, Use my location, Submit report etc.
+- Cleared stale Turbopack persistent cache (rm -rf .next + restart) which was serving old .dark CSS values.
+- Verified via agent-browser: new bg rgb(26,21,48) on body/landing/map (pixel-sampled), all removed texts absent, Run Prediction + navigation flows work, 5 alert bubbles, no console/page errors, mobile 390px no horizontal scroll. Note: hover:bg-white is Tailwind v4 media-gated by (hover: hover) — headless Chromium reports hover:none so effect only verifiable on real desktops (style forcing + transition 0.3s all verified programmatically).
+
+Stage Summary:
+- Theme is a lighter "deep dusk violet" while keeping Royal Purple #7138CC identity; risk scale untouched.
+- All fake-status/prototype jargon removed; copy now reads human and product-like.
+- Primary buttons smoothly invert to white bg + black text on hover (300ms).
+- Dev server healthy at port 3000; src/ has 0 TS errors.

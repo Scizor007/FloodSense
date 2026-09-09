@@ -57,24 +57,24 @@
 :root {
   --radius: 0.75rem;
 
-  /* FloodSense — Royal Violet dark system */
-  --background: #0b0812;
+  /* FloodSense — Royal Violet (lifted) system */
+  --background: #1a1530;
   --foreground: #ece7f8;
-  --card: #13101f;
+  --card: #221d3a;
   --card-foreground: #ece7f8;
-  --popover: #171226;
+  --popover: #262040;
   --popover-foreground: #ece7f8;
   --primary: #7138cc;
   --primary-foreground: #f5f1fe;
-  --secondary: #1d1733;
-  --secondary-foreground: #cfc4ec;
-  --muted: #19142b;
-  --muted-foreground: #9c8fc2;
-  --accent: #271d4d;
-  --accent-foreground: #ded3f8;
+  --secondary: #2a2447;
+  --secondary-foreground: #d9d2f0;
+  --muted: #262040;
+  --muted-foreground: #a89ed3;
+  --accent: #332a5a;
+  --accent-foreground: #e2dbf9;
   --destructive: #e5484d;
-  --border: #2a2244;
-  --input: #2f2650;
+  --border: #3a3160;
+  --input: #403670;
   --ring: #9d6bff;
   --chart-1: #7138cc;
   --chart-2: #22d3ee;
@@ -82,13 +82,13 @@
   --chart-4: #eab308;
   --chart-5: #22c55e;
 
-  --sidebar: #0d0a17;
-  --sidebar-foreground: #c6b9e4;
+  --sidebar: #1c1734;
+  --sidebar-foreground: #d0c6ec;
   --sidebar-primary: #7138cc;
   --sidebar-primary-foreground: #f5f1fe;
-  --sidebar-accent: #1a1430;
+  --sidebar-accent: #2a234a;
   --sidebar-accent-foreground: #ece7f8;
-  --sidebar-border: #201937;
+  --sidebar-border: #302855;
   --sidebar-ring: #9d6bff;
 
   /* risk scale — used consistently across every screen */
@@ -103,31 +103,31 @@
 }
 
 .dark {
-  --background: #0b0812;
+  --background: #1a1530;
   --foreground: #ece7f8;
-  --card: #13101f;
+  --card: #221d3a;
   --card-foreground: #ece7f8;
-  --popover: #171226;
+  --popover: #262040;
   --popover-foreground: #ece7f8;
   --primary: #7138cc;
   --primary-foreground: #f5f1fe;
-  --secondary: #1d1733;
-  --secondary-foreground: #cfc4ec;
-  --muted: #19142b;
-  --muted-foreground: #9c8fc2;
-  --accent: #271d4d;
-  --accent-foreground: #ded3f8;
+  --secondary: #2a2447;
+  --secondary-foreground: #d9d2f0;
+  --muted: #262040;
+  --muted-foreground: #a89ed3;
+  --accent: #332a5a;
+  --accent-foreground: #e2dbf9;
   --destructive: #e5484d;
-  --border: #2a2244;
-  --input: #2f2650;
+  --border: #3a3160;
+  --input: #403670;
   --ring: #9d6bff;
-  --sidebar: #0d0a17;
-  --sidebar-foreground: #c6b9e4;
+  --sidebar: #1c1734;
+  --sidebar-foreground: #d0c6ec;
   --sidebar-primary: #7138cc;
   --sidebar-primary-foreground: #f5f1fe;
-  --sidebar-accent: #1a1430;
+  --sidebar-accent: #2a234a;
   --sidebar-accent-foreground: #ece7f8;
-  --sidebar-border: #201937;
+  --sidebar-border: #302855;
   --sidebar-ring: #9d6bff;
 }
 
@@ -152,7 +152,7 @@
 /* ---------- custom scrollbars ---------- */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #2f2650 transparent;
+  scrollbar-color: #403670 transparent;
 }
 ::-webkit-scrollbar {
   width: 8px;
@@ -162,11 +162,11 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2f2650;
+  background: #403670;
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #43356e;
+  background: #4b4180;
 }
 
 /* ---------- typography helpers ---------- */
@@ -185,14 +185,14 @@
 
 /* ---------- surfaces ---------- */
 .glass-card {
-  background: linear-gradient(160deg, rgba(30, 22, 55, 0.72), rgba(19, 16, 31, 0.85));
+  background: linear-gradient(160deg, rgba(46, 37, 84, 0.75), rgba(33, 28, 58, 0.88));
   backdrop-filter: blur(14px);
-  border: 1px solid rgba(148, 118, 220, 0.14);
+  border: 1px solid rgba(148, 118, 220, 0.18);
 }
 .panel-grid-bg {
   background-image:
-    linear-gradient(rgba(113, 56, 204, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(113, 56, 204, 0.05) 1px, transparent 1px);
+    linear-gradient(rgba(113, 56, 204, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(113, 56, 204, 0.06) 1px, transparent 1px);
   background-size: 44px 44px;
 }
 .noise-overlay::after {
@@ -244,7 +244,7 @@
 .animate-float-slow { animation: float-slow 7s ease-in-out infinite; }
 .animate-marquee { animation: marquee-x 36s linear infinite; }
 .shimmer-bg {
-  background: linear-gradient(110deg, #171226 8%, #241b45 18%, #171226 33%);
+  background: linear-gradient(110deg, #262040 8%, #362b60 18%, #262040 33%);
   background-size: 200% 100%;
   animation: shimmer 2.4s linear infinite;
 }

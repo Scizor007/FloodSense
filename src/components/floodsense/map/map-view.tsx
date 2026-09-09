@@ -97,7 +97,7 @@ export function MapView() {
   return (
     <div className="space-y-5">
       <ScreenHeader
-        eyebrow="City model · live"
+        eyebrow="Live map"
         title="Waterlogging Risk Map"
         desc="Predicted street-level risk across 25 monitored hotspots. Click a marker for corridor detail and alternate routing."
         right={
@@ -132,7 +132,7 @@ export function MapView() {
               )}
             </div>
             <p className="mb-4 text-xs text-muted-foreground">
-              Stress-test the city model with IMD-style rainfall inputs.
+              See how different rainfall levels change the risk map.
             </p>
 
             <div className="mb-1 flex items-baseline justify-between">
@@ -371,9 +371,6 @@ export function MapView() {
                       <Route className="h-4 w-4" />
                       Suggest Alternate Route
                     </Button>
-                    <p className="mt-2 text-center text-[10px] text-muted-foreground">
-                      Routing via avoid-polygon model · ORS-ready
-                    </p>
                   </ScrollArea>
                 </motion.div>
               ) : (

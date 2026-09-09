@@ -129,7 +129,7 @@ function HotspotMarker({
           scale: selected ? 1.3 : hovered ? 1.18 : 1,
         }}
         transition={{ type: "spring", stiffness: 260, damping: 22 }}
-        stroke={selected ? "#ffffff" : "#0b0812"}
+        stroke={selected ? "#ffffff" : "#221d3a"}
         strokeWidth={selected ? 2.4 : 2}
         style={{ transformBox: "fill-box", transformOrigin: "center" }}
       />
@@ -138,7 +138,7 @@ function HotspotMarker({
         textAnchor="middle"
         fontSize={8.5}
         fontWeight={800}
-        fill="#0b0812"
+        fill="#221d3a"
         fontFamily="var(--font-jetbrains), monospace"
         style={{ pointerEvents: "none" }}
       >
@@ -154,7 +154,7 @@ function HotspotMarker({
             width={labelW}
             height={19}
             rx={9}
-            fill="#171226"
+            fill="#2a2447"
             stroke={meta.color}
             strokeWidth={1}
             opacity={0.97}
@@ -208,7 +208,7 @@ export function HyderabadMap({
       <svg
         viewBox={viewBox}
         className="h-full w-full"
-        style={{ background: "#0d0a18" }}
+        style={{ background: "#1e1936" }}
         onClick={() => onSelect?.(null)}
       >
         <defs>
@@ -230,7 +230,7 @@ export function HyderabadMap({
             <stop offset="100%" stopColor="#7138cc" stopOpacity="0" />
           </radialGradient>
           <pattern id="mapGrid" width="50" height="50" patternUnits="userSpaceOnUse">
-            <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#171227" strokeWidth="1" />
+            <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#2e2750" strokeWidth="1" />
           </pattern>
           <pattern id="floodHatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
             <rect width="8" height="8" fill="#ef4444" opacity="0.06" />
@@ -263,18 +263,18 @@ export function HyderabadMap({
 
         {/* ORR */}
         <g>
-          <path d={ORR_PATH} fill="none" stroke="#3d3166" strokeWidth="3.5" strokeDasharray="14 9" opacity="0.9" />
-          <text x="500" y="82" fontSize="9.5" fill="#5a4a8a" letterSpacing="2" fontFamily="var(--font-jetbrains), monospace" textAnchor="middle">OUTER RING ROAD</text>
+          <path d={ORR_PATH} fill="none" stroke="#4c3e82" strokeWidth="3.5" strokeDasharray="14 9" opacity="0.9" />
+          <text x="500" y="82" fontSize="9.5" fill="#6a58a6" letterSpacing="2" fontFamily="var(--font-jetbrains), monospace" textAnchor="middle">OUTER RING ROAD</text>
         </g>
 
         {/* highways + ring roads */}
         <g strokeLinecap="round">
-          <path d={NH44_PATH} fill="none" stroke="#453768" strokeWidth="4.2" />
-          <path d={NH65_PATH} fill="none" stroke="#453768" strokeWidth="4.2" />
-          <path d={INNER_RING_PATH} fill="none" stroke="#33295a" strokeWidth="3" />
-          <path d={PVNR_PATH} fill="none" stroke="#5a4a8a" strokeWidth="2.4" strokeDasharray="1 6" />
+          <path d={NH44_PATH} fill="none" stroke="#534690" strokeWidth="4.2" />
+          <path d={NH65_PATH} fill="none" stroke="#534690" strokeWidth="4.2" />
+          <path d={INNER_RING_PATH} fill="none" stroke="#403674" strokeWidth="3" />
+          <path d={PVNR_PATH} fill="none" stroke="#6a58a6" strokeWidth="2.4" strokeDasharray="1 6" />
           {ARTERIALS.map((d, i) => (
-            <path key={i} d={d} fill="none" stroke="#2b2350" strokeWidth="2.2" />
+            <path key={i} d={d} fill="none" stroke="#393066" strokeWidth="2.2" />
           ))}
         </g>
 
@@ -284,8 +284,8 @@ export function HyderabadMap({
             const { x, y } = project(l.lat, l.lng);
             return (
               <g key={l.name} opacity={0.85}>
-                <circle cx={x} cy={y} r={2.4} fill="#6d5f96" />
-                <text x={x + 6} y={y + 3.5} fontSize={9} fill="#6d5f96" letterSpacing="1.4">
+                <circle cx={x} cy={y} r={2.4} fill="#7d6fae" />
+                <text x={x + 6} y={y + 3.5} fontSize={9} fill="#7d6fae" letterSpacing="1.4">
                   {l.name}
                 </text>
               </g>
@@ -345,17 +345,17 @@ export function HyderabadMap({
           {/* scale bar */}
           {!focus && (
             <g transform="translate(48, 742)">
-              <line x1={0} y1={0} x2={116} y2={0} stroke="#6d5f96" strokeWidth={2} />
-              <line x1={0} y1={-4} x2={0} y2={4} stroke="#6d5f96" strokeWidth={2} />
-              <line x1={58} y1={-3} x2={58} y2={3} stroke="#6d5f96" strokeWidth={1.4} />
-              <line x1={116} y1={-4} x2={116} y2={4} stroke="#6d5f96" strokeWidth={2} />
-              <text x={0} y={-8} fontSize={9} fill="#6d5f96">0</text>
-              <text x={104} y={-8} fontSize={9} fill="#6d5f96">5 km</text>
+              <line x1={0} y1={0} x2={116} y2={0} stroke="#7d6fae" strokeWidth={2} />
+              <line x1={0} y1={-4} x2={0} y2={4} stroke="#7d6fae" strokeWidth={2} />
+              <line x1={58} y1={-3} x2={58} y2={3} stroke="#7d6fae" strokeWidth={1.4} />
+              <line x1={116} y1={-4} x2={116} y2={4} stroke="#7d6fae" strokeWidth={2} />
+              <text x={0} y={-8} fontSize={9} fill="#7d6fae">0</text>
+              <text x={104} y={-8} fontSize={9} fill="#7d6fae">5 km</text>
             </g>
           )}
           {!focus && (
-            <text x={MAP_W - 16} y={MAP_H - 14} textAnchor="end" fontSize={8.5} fill="#4a3d75" letterSpacing={0.8}>
-              HYDERABAD CITY MODEL · stylised basemap · OSM/ORS at integration
+            <text x={MAP_W - 16} y={MAP_H - 14} textAnchor="end" fontSize={8.5} fill="#584c8c" letterSpacing={0.8}>
+              HYDERABAD · illustrative basemap
             </text>
           )}
         </g>

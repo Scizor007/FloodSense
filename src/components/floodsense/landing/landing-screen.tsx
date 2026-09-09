@@ -139,28 +139,19 @@ export function LandingScreen() {
         </motion.div>
 
         <motion.div style={{ y: heroTextY }} className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-6 py-24 text-center">
-          <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary-foreground/90 backdrop-blur">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-water opacity-70" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-water" />
-            </span>
-            GHMC Smart Cities pilot · monsoon 2025
-          </motion.div>
-
-          <motion.h1 variants={fadeUp} initial="hidden" animate="show" custom={1}
+          <motion.h1 variants={fadeUp} initial="hidden" animate="show" custom={0}
             className="font-display max-w-4xl text-5xl font-bold leading-[1.04] tracking-tight md:text-7xl">
             <span className="text-gradient-violet">FloodSense</span>{" "}
             <span className="text-foreground">Hyderabad</span>
           </motion.h1>
 
-          <motion.p variants={fadeUp} initial="hidden" animate="show" custom={2}
+          <motion.p variants={fadeUp} initial="hidden" animate="show" custom={1}
             className="mt-5 max-w-2xl text-lg text-muted-foreground md:text-xl">
             Predicting waterlogged streets before the water arrives.
           </motion.p>
 
           {/* stat row */}
-          <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3}
+          <motion.div variants={fadeUp} initial="hidden" animate="show" custom={2}
             className="mt-10 grid w-full max-w-3xl grid-cols-3 divide-x divide-border rounded-2xl border border-border bg-card/70 backdrop-blur">
             {[
               { v: 25, suf: "", label: "monitored hotspots", sub: "Musi, nala & underpass corridors" },
@@ -177,7 +168,7 @@ export function LandingScreen() {
             ))}
           </motion.div>
 
-          <motion.div variants={fadeUp} initial="hidden" animate="show" custom={4}
+          <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3}
             className="mt-10 flex flex-col items-center gap-4 sm:flex-row">
             <Magnetic>
               <Button size="lg" className="h-12 gap-2 rounded-xl px-8 text-base shadow-[0_0_36px_rgba(113,56,204,0.45)]"
@@ -276,7 +267,7 @@ export function LandingScreen() {
             <span className="font-semibold text-foreground">FloodSense</span> · urban waterlogging early-warning ·
             Hyderabad, India
           </p>
-          <p className="font-mono">demo dataset · civic-tech prototype</p>
+          <p className="font-mono">© 2025</p>
         </div>
       </footer>
     </div>

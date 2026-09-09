@@ -44,7 +44,7 @@ function Pin({ lat, lng, label, kind }: { lat: number; lng: number; label: strin
   const color = kind === "a" ? "#22d3ee" : "#7138cc";
   return (
     <g transform={`translate(${x}, ${y})`}>
-      <circle r={11} fill="#0b0812" stroke={color} strokeWidth={2.5} />
+      <circle r={11} fill="#221d3a" stroke={color} strokeWidth={2.5} />
       <text
         y={4.5}
         textAnchor="middle"
@@ -61,8 +61,8 @@ function Pin({ lat, lng, label, kind }: { lat: number; lng: number; label: strin
         width={label.length * 6.8 + 16}
         height={17}
         rx={8.5}
-        fill="#171226ee"
-        stroke="#2f2650"
+        fill="#2a2447ee"
+        stroke="#403670"
       />
       <text
         y={-20.5}

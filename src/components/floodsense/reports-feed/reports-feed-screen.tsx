@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ClipboardList, ArrowUp, CheckCircle2, Wrench, BadgeCheck, Clock,
-  ArrowUpDown, ShieldCheck, Sparkles,
+  ArrowUpDown, Sparkles,
 } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -62,20 +62,14 @@ export function ReportsFeedScreen() {
   return (
     <div className="space-y-5">
       <ScreenHeader
-        eyebrow="Authority console · GHMC flood cell"
+        eyebrow="Authority triage"
         title="Community Reports Feed"
         desc="Citizen-submitted waterlogging reports, auto-verified by FloodSense Vision. Triage, dispatch and resolve."
         right={
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground">
-              <ShieldCheck className="h-3.5 w-3.5 text-primary" />
-              Operator: <span className="font-medium text-foreground">GHMC Ward Ops</span>
-            </span>
-            <Button variant="outline" size="sm" className="gap-1.5" onClick={() => setSort(sort === "recent" ? "upvoted" : "recent")}>
-              <ArrowUpDown className="h-3.5 w-3.5" />
-              {sort === "recent" ? "Most recent" : "Most upvoted"}
-            </Button>
-          </div>
+          <Button variant="outline" size="sm" className="gap-1.5" onClick={() => setSort(sort === "recent" ? "upvoted" : "recent")}>
+            <ArrowUpDown className="h-3.5 w-3.5" />
+            {sort === "recent" ? "Most recent" : "Most upvoted"}
+          </Button>
         }
       />
 

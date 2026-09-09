@@ -51,8 +51,8 @@ export function baselineLive(): HotspotLive[] {
 
 /** Simulated model latency / log lines for the "Run Prediction" theatre. */
 export const MODEL_LOG_LINES = [
-  "Linking IMD Doppler radar feed…",
-  "Fetching GHMC drain-network graph…",
+  "Reading rainfall radar…",
+  "Loading drain network…",
   "Terrain + nala flow accumulation…",
   "Scoring 25 monitored hotspots…",
   "Cross-checking live community reports…",

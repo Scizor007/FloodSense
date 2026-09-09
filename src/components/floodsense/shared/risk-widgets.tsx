@@ -53,7 +53,7 @@ export function RiskGauge({
   return (
     <div className="relative" style={{ width: size, height: size }}>
       <svg viewBox="0 0 100 100" className="h-full w-full -rotate-90">
-        <circle cx="50" cy="50" r={r} fill="none" stroke="#241b45" strokeWidth="9" />
+        <circle cx="50" cy="50" r={r} fill="none" stroke="#332a58" strokeWidth="9" />
         <motion.circle
           cx="50" cy="50" r={r}
           fill="none"
@@ -84,7 +84,7 @@ export function SeverityBar({ level }: { level: RiskLevel }) {
           key={l}
           className="h-1.5 flex-1 rounded-full"
           style={{
-            background: i <= idx ? RISK_META[l as RiskLevel].color : "#241b45",
+            background: i <= idx ? RISK_META[l as RiskLevel].color : "#332a58",
           }}
         />
       ))}
