@@ -131,7 +131,7 @@ export function MapView() {
                 </span>
               )}
             </div>
-            <p className="mb-4 text-xs text-muted-foreground">
+            <p className="mb-4 text-[15px] leading-[1.65] text-muted-foreground">
               See how different rainfall levels change the risk map.
             </p>
 
@@ -347,7 +347,7 @@ export function MapView() {
                       <p className="mb-1.5 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
                         Likely cause
                       </p>
-                      <p className="text-sm leading-relaxed text-secondary-foreground">{selected.cause}</p>
+                      <p className="text-[15.5px] leading-[1.65] text-secondary-foreground">{selected.cause}</p>
                     </div>
 
                     <div className="mt-4">

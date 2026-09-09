@@ -192,7 +192,7 @@ export function ReportsFeedScreen() {
 
         {filtered.length === 0 && (
           <div className="glass-card rounded-xl p-10 text-center">
-            <p className="text-sm text-muted-foreground">No reports in this view right now.</p>
+            <p className="text-[15.5px] leading-[1.65] text-muted-foreground">No reports in this view right now.</p>
             <Button variant="outline" size="sm" className="mt-4" onClick={() => setView("report")}>
               File a demo report
             </Button>

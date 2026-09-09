@@ -67,7 +67,7 @@ function AlertBubble({ alert, index }: { alert: FloodAlert; index: number }) {
         </div>
 
         <p className="text-sm font-semibold leading-snug">{alert.title}</p>
-        <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">{alert.message}</p>
+        <p className="mt-1 text-[15.5px] leading-[1.65] text-muted-foreground">{alert.message}</p>
 
         {alert.routeHint && (
           <div className="mt-3 flex items-center gap-2 rounded-lg border border-water/25 bg-water/5 px-3 py-2">

@@ -260,7 +260,7 @@ export function ReportScreen() {
                   </div>
                 </div>
                 <h3 className="font-display text-lg font-semibold">Report submitted — AI is verifying your photo…</h3>
-                <p className="mt-2 max-w-sm text-sm text-muted-foreground">
+                <p className="mt-2 max-w-sm text-[15.5px] leading-[1.65] text-muted-foreground">
                   FloodSense Vision is estimating water depth, matching the location and checking for duplicates.
                 </p>
                 <div className="mt-6 w-64">
@@ -289,7 +289,7 @@ export function ReportScreen() {
                 <h3 className="font-display text-xl font-semibold">
                   Verified <span className="text-risk-low">✓</span>
                 </h3>
-                <p className="mt-2 max-w-sm text-sm text-muted-foreground">
+                <p className="mt-2 max-w-sm text-[15.5px] leading-[1.65] text-muted-foreground">
                   Your report is live on the authority feed and visible to neighbours within 5 km.
                 </p>
 

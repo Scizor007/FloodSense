@@ -112,7 +112,7 @@ export function ScreenHeader({
         <h1 className="font-display mt-1 text-2xl font-semibold tracking-tight text-foreground md:text-[28px]">
           {title}
         </h1>
-        {desc && <p className="mt-1.5 max-w-2xl text-sm text-muted-foreground">{desc}</p>}
+        {desc && <p className="mt-1.5 max-w-2xl text-[16px] leading-[1.65] text-muted-foreground">{desc}</p>}
       </div>
       {right}
     </div>

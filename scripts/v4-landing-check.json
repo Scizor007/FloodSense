@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "1. **Yes.** The body text uses a clean, readable sans-serif (Inter) with comfortable line height and spacing, making it easy to scan.\n2. **Yes.** The headline is bold and impactful (near-black weight), featuring a vibrant purple-to-pink gradient on \"Hyderabad.\"\n3. **Yes.** The left-text, right-map layout is well-balanced, with the stats row anchoring the bottom of the text column.\n4. **No.** There is no visible text overflow or broken areas; the layout is clean and spacious.\n5. **Yes.** Subtle vertical rain streaks are visible in the background grid.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1788962267,
+  "id": "20260909215743082f12fc07a04a27",
+  "model": "glm-5v-turbo",
+  "object": "chat.completion",
+  "request_id": "20260909215743082f12fc07a04a27",
+  "usage": {
+    "completion_tokens": 136,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 1779,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1915
+  }
+}

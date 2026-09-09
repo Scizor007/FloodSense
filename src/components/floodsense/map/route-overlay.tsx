@@ -51,7 +51,7 @@ function Pin({ lat, lng, label, kind }: { lat: number; lng: number; label: strin
         fontSize={11}
         fontWeight={700}
         fill={color}
-        fontFamily="var(--font-jetbrains), monospace"
+        fontFamily="var(--font-inter), sans-serif"
       >
         {kind.toUpperCase()}
       </text>
@@ -69,7 +69,7 @@ function Pin({ lat, lng, label, kind }: { lat: number; lng: number; label: strin
         textAnchor="middle"
         fontSize={10.5}
         fill="#1a1025"
-        fontFamily="var(--font-jetbrains), monospace"
+        fontFamily="var(--font-inter), sans-serif"
         letterSpacing={0.4}
       >
         {label}

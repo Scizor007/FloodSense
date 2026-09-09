@@ -139,7 +139,7 @@ function HotspotMarker({
         fontSize={8.5}
         fontWeight={800}
         fill="#ffffff"
-        fontFamily="var(--font-jetbrains), monospace"
+        fontFamily="var(--font-inter), sans-serif"
         style={{ pointerEvents: "none" }}
       >
         {h.riskScore}
@@ -162,10 +162,10 @@ function HotspotMarker({
           <text
             y={-r - 17}
             textAnchor="middle"
-            fontSize={10}
+            fontSize={11}
             fontWeight={600}
             fill="#1a1025"
-            fontFamily="var(--font-jetbrains), monospace"
+            fontFamily="var(--font-inter), sans-serif"
           >
             {h.name}
           </text>

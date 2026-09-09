@@ -145,22 +145,22 @@ export function LandingScreen() {
           <div>
             {/* eyebrow — numbered label, reference format */}
             <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}
-              className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
-              <span>01</span>
+              className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.28em] text-muted-foreground">
+              <span className="font-mono">01</span>
               <span className="h-px w-12 bg-muted-foreground/45" />
               <span>Early-warning system</span>
             </motion.div>
 
             <motion.h1 variants={fadeUp} initial="hidden" animate="show" custom={1}
-              className="mt-5 font-display text-[42px] font-extrabold leading-[1.04] tracking-[-0.03em] text-foreground md:text-7xl lg:text-[78px]">
+              className="mt-5 font-display text-[46px] font-black leading-[1.02] tracking-[-0.035em] text-foreground md:text-[74px] lg:text-[84px]">
               FloodSense
               <br />
               <span className="text-gradient-ombre">Hyderabad</span>
-              <span className="text-[1.12em]">.</span>
+              <span className="text-[1.1em]">.</span>
             </motion.h1>
 
             <motion.p variants={fadeUp} initial="hidden" animate="show" custom={2}
-              className="mt-4 max-w-xl text-base text-muted-foreground md:text-lg">
+              className="body-text mt-4 max-w-xl text-muted-foreground">
               Predicting waterlogged streets before the water arrives.
             </motion.p>
 
@@ -242,7 +242,7 @@ export function LandingScreen() {
       {/* ================= FEATURES ================= */}
       <section className="relative mx-auto max-w-6xl px-6 py-20">
         <motion.p variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }}
-          className="font-mono text-xs uppercase tracking-[0.25em] text-primary/90">
+          className="text-[11px] font-medium uppercase tracking-[0.25em] text-primary/90">
           The system
         </motion.p>
         <motion.h2 variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} custom={1}
@@ -262,7 +262,7 @@ export function LandingScreen() {
                 <f.icon className="h-5 w-5" style={{ color: f.accent }} />
               </div>
               <h3 className="font-display text-base font-semibold">{f.title}</h3>
-              <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">{f.desc}</p>
+              <p className="mt-2 text-[16px] leading-[1.65] text-muted-foreground">{f.desc}</p>
             </motion.div>
           ))}
         </div>
@@ -272,7 +272,7 @@ export function LandingScreen() {
       <section id="how-it-works" className="relative border-t border-border/60 bg-white/45">
         <div className="mx-auto max-w-6xl px-6 py-20">
           <motion.p variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }}
-            className="font-mono text-xs uppercase tracking-[0.25em] text-primary/90">Pipeline</motion.p>
+            className="text-[11px] font-medium uppercase tracking-[0.25em] text-primary/90">Pipeline</motion.p>
           <motion.h2 variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} custom={1}
             className="font-display mt-2 text-3xl font-semibold tracking-tight md:text-4xl">Sense → Predict → Protect</motion.h2>
 
@@ -288,7 +288,7 @@ export function LandingScreen() {
                   <span className="font-mono text-xs text-muted-foreground">{s.step}</span>
                 </div>
                 <h3 className="font-display text-lg font-semibold">{s.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
+                <p className="mt-2 text-[16px] leading-[1.65] text-muted-foreground">{s.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -296,7 +296,7 @@ export function LandingScreen() {
           <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}
             className="mt-14 flex flex-col items-center gap-5 rounded-2xl border border-primary/30 bg-gradient-to-b from-primary/15 to-transparent p-8 text-center">
             <p className="font-display text-xl font-semibold">The next spell shouldn&apos;t surprise anyone.</p>
-            <p className="max-w-xl text-sm text-muted-foreground">
+            <p className="max-w-xl text-[16px] leading-[1.65] text-muted-foreground">
               Explore the live city model — simulate a cloudburst, watch hotspots escalate, and route around them.
             </p>
             <Magnetic>
