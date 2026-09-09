@@ -225,6 +225,8 @@ export interface RerouteRequest {
   origin: Coordinates;
   destination: Coordinates;
   avoid_hotspot_ids?: string[] | null;
+  check_flood_risk?: boolean;
+  send_email_alert?: boolean;
 }
 
 export interface RerouteResponse {
@@ -241,6 +243,14 @@ export interface RerouteResponse {
   original_duration_minutes?: number | null;
   added_distance_km?: number | null;
   added_duration_minutes?: number | null;
+  exposure_level?: "NONE" | "LOW" | "MODERATE" | "HIGH" | "SEVERE" | string;
+  max_risk_score?: number;
+  affected_zones?: string[];
+  is_hazard?: boolean;
+  warning_message?: string | null;
+  alert_triggered?: boolean;
+  email_sent?: boolean;
+  email_status?: string | null;
 }
 
 export interface DeliveryStatus {

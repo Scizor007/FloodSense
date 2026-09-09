@@ -22,6 +22,14 @@ class RerouteRequest(BaseModel):
         default=None,
         description="List of flooded hotspot IDs or names to avoid",
     )
+    check_flood_risk: Optional[bool] = Field(
+        default=True,
+        description="Evaluate flood risk exposure along the route",
+    )
+    send_email_alert: Optional[bool] = Field(
+        default=False,
+        description="Send SMTP email alert if route has high/severe flood exposure",
+    )
 
 
 class Waypoint(BaseModel):
@@ -49,19 +57,31 @@ class RerouteResponse(BaseModel):
     original_duration_minutes: Optional[float] = None
     added_distance_km: Optional[float] = None
     added_duration_minutes: Optional[float] = None
+    # User-safety & flood exposure extensions
+    exposure_level: str = "NONE"
+    max_risk_score: float = 0.0
+    affected_zones: List[str] = Field(default_factory=list)
+    is_hazard: bool = False
+    warning_message: Optional[str] = None
+    alert_triggered: bool = False
+    email_sent: bool = False
+    email_status: Optional[str] = None
 
 
 @router.post("/reroute", response_model=RerouteResponse)
 async def get_reroute(request: RerouteRequest):
     """
     Compute safe detour driving route avoiding flooded hotspots using
-    OpenRouteService avoid-polygons with automatic OSRM fallback.
+    OpenRouteService avoid-polygons with automatic OSRM fallback,
+    evaluating flood exposure along the corridor and sending SMTP alerts if needed.
     """
     try:
         data = await calculate_reroute(
             origin={"lat": request.origin.lat, "lng": request.origin.lng},
             destination={"lat": request.destination.lat, "lng": request.destination.lng},
             avoid_hotspot_ids=request.avoid_hotspot_ids,
+            check_flood_risk=request.check_flood_risk if request.check_flood_risk is not None else True,
+            send_email_alert=request.send_email_alert if request.send_email_alert is not None else False,
         )
         return RerouteResponse(**data)
     except Exception as e:
@@ -69,3 +89,4 @@ async def get_reroute(request: RerouteRequest):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Route calculation failed: {str(e)}",
         )
+

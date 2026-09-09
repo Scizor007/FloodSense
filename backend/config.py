@@ -26,9 +26,26 @@ class Settings(BaseSettings):
     TWILIO_SMS_NUMBER: str = ""
     TWILIO_WHATSAPP_NUMBER: str = "whatsapp:+14155238886"
 
+    # SMTP Email Configuration
+    SMTP_HOST: str = "smtp.gmail.com"
+    SMTP_PORT: int = 587
+    SMTP_USERNAME: str = "prajwalupadhyay23@gmail.com"
+    SMTP_PASSWORD: str = ""
+    ALERT_RECIPIENTS: Union[str, List[str]] = [
+        "prajwal.ff1234@gmail.com",
+        "kjaathvika@gmail.com",
+    ]
+
     @field_validator("CORS_ORIGINS", mode="before")
     @classmethod
     def assemble_cors_origins(cls, v: Union[str, List[str]]) -> List[str]:
+        if isinstance(v, str):
+            return [i.strip() for i in v.split(",") if i.strip()]
+        return v
+
+    @field_validator("ALERT_RECIPIENTS", mode="before")
+    @classmethod
+    def assemble_alert_recipients(cls, v: Union[str, List[str]]) -> List[str]:
         if isinstance(v, str):
             return [i.strip() for i in v.split(",") if i.strip()]
         return v
