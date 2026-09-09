@@ -32,7 +32,7 @@ function Logo({ compact = false }: { compact?: boolean }) {
       data-cursor="hover"
       aria-label="FloodSense home"
     >
-      <span className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#9d6bff] to-[#7138cc] shadow-[0_0_18px_rgba(113,56,204,0.5)]">
+      <span className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#9d6bff] to-[#7138cc] shadow-[0_6px_16px_-4px_rgba(113,56,204,0.55)]">
         <Droplets className="h-4.5 w-4.5 text-white" />
       </span>
       {!compact && (
@@ -78,13 +78,13 @@ function Sidebar({ view, unread }: { view: View; unread: number }) {
               {active && (
                 <motion.span
                   layoutId="nav-pill"
-                  className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-full bg-primary shadow-[0_0_12px_rgba(113,56,204,0.8)]"
+                  className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-full bg-primary shadow-[0_4px_10px_-2px_rgba(113,56,204,0.6)]"
                 />
               )}
               <item.icon className={`h-4.5 w-4.5 ${active ? "text-primary" : ""}`} />
               <span className="flex-1">
                 <span className="block text-[13.5px] font-medium leading-tight">{item.label}</span>
-                <span className="block text-[10.5px] text-muted-foreground/70">{item.desc}</span>
+                <span className="block text-[10.5px] text-muted-foreground/85">{item.desc}</span>
               </span>
               {item.view === "alerts" && unread > 0 && (
                 <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-water px-1.5 font-mono text-[10px] font-bold text-background">

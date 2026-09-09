@@ -112,7 +112,7 @@ export function ReportScreen() {
   return (
     <div className="space-y-5">
       <ScreenHeader
-        eyebrow="Community reporting · 30 seconds"
+        eyebrow="Community reporting"
         title="Report Waterlogging"
         desc="A photo and a tap. FloodSense Vision estimates water depth and pins your report for neighbours and GHMC."
       />
@@ -261,7 +261,7 @@ export function ReportScreen() {
                 </div>
                 <h3 className="font-display text-lg font-semibold">Report submitted — AI is verifying your photo…</h3>
                 <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-                  FloodSense Vision (Gemini) is estimating water depth, matching the location and checking for duplicates.
+                  FloodSense Vision is estimating water depth, matching the location and checking for duplicates.
                 </p>
                 <div className="mt-6 w-64">
                   <div className="h-1.5 overflow-hidden rounded-full bg-secondary">
@@ -325,10 +325,10 @@ export function ReportScreen() {
             </p>
             <ol className="space-y-3.5">
               {[
-                { t: "AI verification", d: "Photo → water-depth estimate + landmark match (≈ 10 s).", c: "#22d3ee" },
+                { t: "AI verification", d: "Photo → water-depth estimate + landmark match (≈ 10 s).", c: "#0891b2" },
                 { t: "Neighbourhood alert", d: "Residents within 5 km get the report on their Around Me feed.", c: "#7138cc" },
-                { t: "Authority triage", d: "GHMC flood cell sees it instantly; dewatering crew dispatch.", c: "#eab308" },
-                { t: "Loop closed", d: "You get an SMS when the spot is cleared.", c: "#22c55e" },
+                { t: "Authority triage", d: "GHMC flood cell sees it instantly; dewatering crew dispatch.", c: "#ca8a04" },
+                { t: "Loop closed", d: "You get an SMS when the spot is cleared.", c: "#16a34a" },
               ].map((s, i) => (
                 <li key={s.t} className="flex gap-3">
                   <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full font-mono text-[10px] font-bold"

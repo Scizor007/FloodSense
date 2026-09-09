@@ -41,7 +41,7 @@ function RainLayer({ intensity }: { intensity: number }) {
         <line
           key={i}
           x1={l.x} y1={l.y} x2={l.x - 8} y2={l.y + 26}
-          stroke="#9dd6ff" strokeWidth={1.1} strokeLinecap="round"
+          stroke="#5bb8e8" strokeWidth={1.1} strokeLinecap="round"
           style={{
             animation: `rain-fall ${l.dur}s linear ${l.delay}s infinite`,
           }}
@@ -129,16 +129,16 @@ function HotspotMarker({
           scale: selected ? 1.3 : hovered ? 1.18 : 1,
         }}
         transition={{ type: "spring", stiffness: 260, damping: 22 }}
-        stroke={selected ? "#ffffff" : "#221d3a"}
-        strokeWidth={selected ? 2.4 : 2}
-        style={{ transformBox: "fill-box", transformOrigin: "center" }}
+        stroke={selected ? "#251f45" : "#ffffff"}
+        strokeWidth={selected ? 2.6 : 2.2}
+        style={{ transformBox: "fill-box", transformOrigin: "center", filter: "drop-shadow(0 1px 2px rgba(37,31,69,0.35))" }}
       />
       <text
         y={3.6}
         textAnchor="middle"
         fontSize={8.5}
         fontWeight={800}
-        fill="#221d3a"
+        fill="#ffffff"
         fontFamily="var(--font-jetbrains), monospace"
         style={{ pointerEvents: "none" }}
       >
@@ -154,9 +154,9 @@ function HotspotMarker({
             width={labelW}
             height={19}
             rx={9}
-            fill="#2a2447"
+            fill="#ffffff"
             stroke={meta.color}
-            strokeWidth={1}
+            strokeWidth={1.2}
             opacity={0.97}
           />
           <text
@@ -164,7 +164,7 @@ function HotspotMarker({
             textAnchor="middle"
             fontSize={10}
             fontWeight={600}
-            fill="#ece7f8"
+            fill="#251f45"
             fontFamily="var(--font-inter), sans-serif"
           >
             {h.name}
@@ -208,33 +208,33 @@ export function HyderabadMap({
       <svg
         viewBox={viewBox}
         className="h-full w-full"
-        style={{ background: "#1e1936" }}
+        style={{ background: "#f3effb" }}
         onClick={() => onSelect?.(null)}
       >
         <defs>
           <radialGradient id="lakeGrad" cx="38%" cy="35%" r="80%">
-            <stop offset="0%" stopColor="#155e75" />
-            <stop offset="100%" stopColor="#0b2d3d" />
+            <stop offset="0%" stopColor="#b5e5f5" />
+            <stop offset="100%" stopColor="#8ed2ee" />
           </radialGradient>
           <linearGradient id="riverGrad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#0e7490" />
-            <stop offset="50%" stopColor="#22d3ee" stopOpacity="0.75" />
-            <stop offset="100%" stopColor="#0e7490" />
+            <stop offset="0%" stopColor="#38a8d8" />
+            <stop offset="50%" stopColor="#7cc8e8" stopOpacity="0.85" />
+            <stop offset="100%" stopColor="#38a8d8" />
           </linearGradient>
           <linearGradient id="routeGrad" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor="#7138cc" />
-            <stop offset="100%" stopColor="#22d3ee" />
+            <stop offset="100%" stopColor="#0891b2" />
           </linearGradient>
           <radialGradient id="cityGlow" cx="50%" cy="50%" r="55%">
-            <stop offset="0%" stopColor="#7138cc" stopOpacity="0.16" />
+            <stop offset="0%" stopColor="#7138cc" stopOpacity="0.10" />
             <stop offset="100%" stopColor="#7138cc" stopOpacity="0" />
           </radialGradient>
           <pattern id="mapGrid" width="50" height="50" patternUnits="userSpaceOnUse">
-            <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#2e2750" strokeWidth="1" />
+            <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#e6def7" strokeWidth="1" />
           </pattern>
           <pattern id="floodHatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-            <rect width="8" height="8" fill="#ef4444" opacity="0.06" />
-            <line x1="0" y1="0" x2="0" y2="8" stroke="#ef4444" strokeWidth="2.4" opacity="0.22" />
+            <rect width="8" height="8" fill="#ef4444" opacity="0.05" />
+            <line x1="0" y1="0" x2="0" y2="8" stroke="#ef4444" strokeWidth="2.4" opacity="0.2" />
           </pattern>
         </defs>
 
@@ -244,37 +244,37 @@ export function HyderabadMap({
 
         {/* water bodies */}
         <g>
-          <path d={HUSSAIN_SAGAR} fill="url(#lakeGrad)" stroke="#164e63" strokeWidth="1.6" opacity="0.92" />
-          <path d={OSMAN_SAGAR} fill="url(#lakeGrad)" stroke="#164e63" strokeWidth="1.2" opacity="0.85" />
-          <path d={HIMAYAT_SAGAR} fill="url(#lakeGrad)" stroke="#164e63" strokeWidth="1.2" opacity="0.85" />
-          <path d={DURGAM_CHERUVU} fill="url(#lakeGrad)" stroke="#164e63" strokeWidth="1.2" opacity="0.85" />
-          <path d={SAROORNAGAR} fill="url(#lakeGrad)" stroke="#164e63" strokeWidth="1.1" opacity="0.8" />
-          <path d={MIR_ALAM} fill="url(#lakeGrad)" stroke="#164e63" strokeWidth="1.1" opacity="0.8" />
+          <path d={HUSSAIN_SAGAR} fill="url(#lakeGrad)" stroke="#6cb6d8" strokeWidth="1.6" opacity="0.92" />
+          <path d={OSMAN_SAGAR} fill="url(#lakeGrad)" stroke="#6cb6d8" strokeWidth="1.2" opacity="0.85" />
+          <path d={HIMAYAT_SAGAR} fill="url(#lakeGrad)" stroke="#6cb6d8" strokeWidth="1.2" opacity="0.85" />
+          <path d={DURGAM_CHERUVU} fill="url(#lakeGrad)" stroke="#6cb6d8" strokeWidth="1.2" opacity="0.85" />
+          <path d={SAROORNAGAR} fill="url(#lakeGrad)" stroke="#6cb6d8" strokeWidth="1.1" opacity="0.8" />
+          <path d={MIR_ALAM} fill="url(#lakeGrad)" stroke="#6cb6d8" strokeWidth="1.1" opacity="0.8" />
           {/* Buddha statue */}
-          <circle cx="534" cy="424" r="2.6" fill="#22d3ee" opacity="0.9" />
+          <circle cx="534" cy="424" r="2.6" fill="#0891b2" opacity="0.9" />
         </g>
 
         {/* Musi river */}
         <g>
-          <path d={MUSI_PATH} fill="none" stroke="url(#riverGrad)" strokeWidth="4" opacity="0.75" />
-          <path d={MUSI_PATH} fill="none" stroke="#22d3ee" strokeWidth="1" opacity="0.6" />
-          <text x="390" y="655" fontSize="9" fill="#3d8ea5" letterSpacing="2.5" fontFamily="var(--font-jetbrains), monospace">MUSI R.</text>
+          <path d={MUSI_PATH} fill="none" stroke="url(#riverGrad)" strokeWidth="4" opacity="0.8" />
+          <path d={MUSI_PATH} fill="none" stroke="#38a8d8" strokeWidth="1" opacity="0.7" />
+          <text x="390" y="655" fontSize="9" fill="#4e9bb8" letterSpacing="2.5" fontFamily="var(--font-jetbrains), monospace">MUSI R.</text>
         </g>
 
         {/* ORR */}
         <g>
-          <path d={ORR_PATH} fill="none" stroke="#4c3e82" strokeWidth="3.5" strokeDasharray="14 9" opacity="0.9" />
-          <text x="500" y="82" fontSize="9.5" fill="#6a58a6" letterSpacing="2" fontFamily="var(--font-jetbrains), monospace" textAnchor="middle">OUTER RING ROAD</text>
+          <path d={ORR_PATH} fill="none" stroke="#b49be8" strokeWidth="3.5" strokeDasharray="14 9" opacity="0.95" />
+          <text x="500" y="82" fontSize="9.5" fill="#8b76c9" letterSpacing="2" fontFamily="var(--font-jetbrains), monospace" textAnchor="middle">OUTER RING ROAD</text>
         </g>
 
         {/* highways + ring roads */}
         <g strokeLinecap="round">
-          <path d={NH44_PATH} fill="none" stroke="#534690" strokeWidth="4.2" />
-          <path d={NH65_PATH} fill="none" stroke="#534690" strokeWidth="4.2" />
-          <path d={INNER_RING_PATH} fill="none" stroke="#403674" strokeWidth="3" />
-          <path d={PVNR_PATH} fill="none" stroke="#6a58a6" strokeWidth="2.4" strokeDasharray="1 6" />
+          <path d={NH44_PATH} fill="none" stroke="#a98fe0" strokeWidth="4.2" />
+          <path d={NH65_PATH} fill="none" stroke="#a98fe0" strokeWidth="4.2" />
+          <path d={INNER_RING_PATH} fill="none" stroke="#c4b1ec" strokeWidth="3" />
+          <path d={PVNR_PATH} fill="none" stroke="#b49be8" strokeWidth="2.4" strokeDasharray="1 6" />
           {ARTERIALS.map((d, i) => (
-            <path key={i} d={d} fill="none" stroke="#393066" strokeWidth="2.2" />
+            <path key={i} d={d} fill="none" stroke="#d8cbf3" strokeWidth="2.2" />
           ))}
         </g>
 
@@ -283,9 +283,9 @@ export function HyderabadMap({
           {LOCALITY_LABELS.map((l) => {
             const { x, y } = project(l.lat, l.lng);
             return (
-              <g key={l.name} opacity={0.85}>
-                <circle cx={x} cy={y} r={2.4} fill="#7d6fae" />
-                <text x={x + 6} y={y + 3.5} fontSize={9} fill="#7d6fae" letterSpacing="1.4">
+              <g key={l.name} opacity={0.9}>
+                <circle cx={x} cy={y} r={2.4} fill="#7a68b5" />
+                <text x={x + 6} y={y + 3.5} fontSize={9} fill="#6b58a8" letterSpacing="1.4">
                   {l.name}
                 </text>
               </g>
@@ -306,7 +306,7 @@ export function HyderabadMap({
               <ellipse cx={c.x} cy={c.y} rx={rx} ry={ry} fill="none" stroke="#7138cc" strokeWidth={2} opacity={0.9} />
               <ellipse cx={c.x} cy={c.y} rx={rx} ry={ry} fill="none" stroke="#9d6bff" strokeWidth={1} opacity={0.4} style={{ animation: "ping-ring 3s ease-out infinite", transformBox: "fill-box", transformOrigin: "center" }} />
               {focusLabel && (
-                <text x={c.x} y={c.y - ry - 10} textAnchor="middle" fontSize={13} fill="#cbb4ff" letterSpacing={1.5} fontFamily="var(--font-jetbrains), monospace">
+                <text x={c.x} y={c.y - ry - 10} textAnchor="middle" fontSize={13} fill="#6d5bc7" letterSpacing={1.5} fontFamily="var(--font-jetbrains), monospace">
                   {focusLabel}
                 </text>
               )}
@@ -340,21 +340,21 @@ export function HyderabadMap({
           {/* north arrow */}
           <g transform={`translate(${focus ? parseFloat(viewBox.split(" ")[0]) + 40 : 944}, ${focus ? parseFloat(viewBox.split(" ")[1]) + 48 : 42})`}>
             <path d="M 0 -14 L 5 6 L 0 2 L -5 6 Z" fill="#9d6bff" />
-            <text y={18} textAnchor="middle" fontSize={10} fill="#9c8fc2">N</text>
+            <text y={18} textAnchor="middle" fontSize={10} fill="#7a68b5">N</text>
           </g>
           {/* scale bar */}
           {!focus && (
             <g transform="translate(48, 742)">
-              <line x1={0} y1={0} x2={116} y2={0} stroke="#7d6fae" strokeWidth={2} />
-              <line x1={0} y1={-4} x2={0} y2={4} stroke="#7d6fae" strokeWidth={2} />
-              <line x1={58} y1={-3} x2={58} y2={3} stroke="#7d6fae" strokeWidth={1.4} />
-              <line x1={116} y1={-4} x2={116} y2={4} stroke="#7d6fae" strokeWidth={2} />
-              <text x={0} y={-8} fontSize={9} fill="#7d6fae">0</text>
-              <text x={104} y={-8} fontSize={9} fill="#7d6fae">5 km</text>
+              <line x1={0} y1={0} x2={116} y2={0} stroke="#7a68b5" strokeWidth={2} />
+              <line x1={0} y1={-4} x2={0} y2={4} stroke="#7a68b5" strokeWidth={2} />
+              <line x1={58} y1={-3} x2={58} y2={3} stroke="#7a68b5" strokeWidth={1.4} />
+              <line x1={116} y1={-4} x2={116} y2={4} stroke="#7a68b5" strokeWidth={2} />
+              <text x={0} y={-8} fontSize={9} fill="#7a68b5">0</text>
+              <text x={104} y={-8} fontSize={9} fill="#7a68b5">5 km</text>
             </g>
           )}
           {!focus && (
-            <text x={MAP_W - 16} y={MAP_H - 14} textAnchor="end" fontSize={8.5} fill="#584c8c" letterSpacing={0.8}>
+            <text x={MAP_W - 16} y={MAP_H - 14} textAnchor="end" fontSize={8.5} fill="#9c8fd0" letterSpacing={0.8}>
               HYDERABAD · illustrative basemap
             </text>
           )}

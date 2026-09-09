@@ -80,7 +80,7 @@ export function AroundMeScreen() {
   return (
     <div className="space-y-5">
       <ScreenHeader
-        eyebrow="Around me · radius scoped"
+        eyebrow="Around me"
         title="Your Neighbourhood Risk"
         desc="Everything within ~5 km of your locality — predicted zones, live community reports and a safe way through."
       />
@@ -134,7 +134,7 @@ export function AroundMeScreen() {
           </div>
           <div className="flex items-center justify-between border-t border-border px-4 py-2.5">
             <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-              zoomed city model · {locality.name}
+              zoomed to · {locality.name}
             </p>
             {worst && (
               <label className="flex cursor-pointer items-center gap-2 text-[11px] text-muted-foreground">

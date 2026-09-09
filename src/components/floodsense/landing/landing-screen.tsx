@@ -31,14 +31,14 @@ function HeroBackdrop() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
       {/* grid + vignette */}
-      <div className="panel-grid-bg absolute inset-0 opacity-80" />
-      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 70% 60% at 50% 38%, rgba(113,56,204,0.22), transparent 65%)" }} />
+      <div className="panel-grid-bg absolute inset-0 opacity-90" />
+      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 70% 60% at 50% 38%, rgba(113,56,204,0.10), transparent 65%)" }} />
 
       {/* radar sweep */}
       <div
         className="absolute left-1/2 top-[38%] h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full"
         style={{
-          background: "conic-gradient(from 0deg, rgba(157,107,255,0.16), transparent 22%, transparent 100%)",
+          background: "conic-gradient(from 0deg, rgba(157,107,255,0.18), transparent 22%, transparent 100%)",
           animation: "radar-sweep 7s linear infinite",
           maskImage: "radial-gradient(circle, black 0%, transparent 68%)",
           WebkitMaskImage: "radial-gradient(circle, black 0%, transparent 68%)",
@@ -54,7 +54,7 @@ function HeroBackdrop() {
             left: `${(i * 37.7) % 100}%`,
             top: `-5%`,
             height: `${14 + (i % 5) * 6}px`,
-            background: "linear-gradient(180deg, transparent, rgba(157,214,255,0.5))",
+            background: "linear-gradient(180deg, transparent, rgba(90,150,220,0.45))",
             animation: `rain-fall ${1.1 + (i % 7) * 0.16}s linear ${(i % 9) * 0.32}s infinite`,
           }}
         />
@@ -85,19 +85,19 @@ const FEATURES = [
     icon: Users,
     title: "Community ground truth",
     desc: "Residents report waterlogging with photos. Vision AI auto-verifies depth and location within seconds.",
-    accent: "#22d3ee",
+    accent: "#0891b2",
   },
   {
     icon: Route,
     title: "Alternate route guidance",
     desc: "Avoid-polygon routing re-plans commutes around flooded corridors and pushes SMS / WhatsApp advisories.",
-    accent: "#eab308",
+    accent: "#ca8a04",
   },
   {
     icon: ShieldCheck,
     title: "Authority response desk",
     desc: "GHMC flood cells triage verified reports, dispatch dewatering crews and close the loop with citizens.",
-    accent: "#f97316",
+    accent: "#ea580c",
   },
 ];
 
@@ -142,7 +142,7 @@ export function LandingScreen() {
           <motion.h1 variants={fadeUp} initial="hidden" animate="show" custom={0}
             className="font-display max-w-4xl text-5xl font-bold leading-[1.04] tracking-tight md:text-7xl">
             <span className="text-gradient-violet">FloodSense</span>{" "}
-            <span className="text-foreground">Hyderabad</span>
+            <span className="text-gradient-ombre">Hyderabad</span>
           </motion.h1>
 
           <motion.p variants={fadeUp} initial="hidden" animate="show" custom={1}
@@ -171,7 +171,7 @@ export function LandingScreen() {
           <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3}
             className="mt-10 flex flex-col items-center gap-4 sm:flex-row">
             <Magnetic>
-              <Button size="lg" className="h-12 gap-2 rounded-xl px-8 text-base shadow-[0_0_36px_rgba(113,56,204,0.45)]"
+              <Button size="lg" className="h-12 gap-2 rounded-xl px-8 text-base shadow-[0_10px_28px_-8px_rgba(113,56,204,0.55)]"
                 onClick={() => setView("map")} data-cursor="hover">
                 View Live Map
                 <ArrowRight className="h-4.5 w-4.5" />
@@ -208,7 +208,7 @@ export function LandingScreen() {
               className="glass-card group relative overflow-hidden rounded-2xl p-5">
               <div className="absolute right-0 top-0 h-24 w-24 rounded-full opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-20"
                 style={{ background: f.accent }} />
-              <div className="mb-4 inline-flex rounded-xl border border-border bg-secondary/70 p-2.5"
+              <div className="mb-4 inline-flex rounded-xl border border-border bg-secondary/80 p-2.5"
                 style={{ boxShadow: `inset 0 0 0 1px ${f.accent}22` }}>
                 <f.icon className="h-5 w-5" style={{ color: f.accent }} />
               </div>
@@ -220,7 +220,7 @@ export function LandingScreen() {
       </section>
 
       {/* ================= HOW IT WORKS ================= */}
-      <section id="how-it-works" className="relative border-t border-border/60 bg-card/30">
+      <section id="how-it-works" className="relative border-t border-border/60 bg-white/45">
         <div className="mx-auto max-w-6xl px-6 py-20">
           <motion.p variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }}
             className="font-mono text-xs uppercase tracking-[0.25em] text-primary/90">Pipeline</motion.p>
@@ -233,7 +233,7 @@ export function LandingScreen() {
               <motion.div key={s.step} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-60px" }} custom={i}
                 className="relative">
                 <div className="mb-4 flex items-center gap-3">
-                  <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-2xl border border-primary/40 bg-card shadow-[0_0_24px_rgba(113,56,204,0.25)]">
+                  <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-2xl border border-primary/30 bg-card shadow-[0_10px_24px_-10px_rgba(113,56,204,0.45)]">
                     <s.icon className="h-6 w-6 text-primary" />
                   </div>
                   <span className="font-mono text-xs text-muted-foreground">{s.step}</span>
@@ -251,7 +251,7 @@ export function LandingScreen() {
               Explore the live city model — simulate a cloudburst, watch hotspots escalate, and route around them.
             </p>
             <Magnetic>
-              <Button size="lg" className="h-12 gap-2 rounded-xl px-8 text-base shadow-[0_0_36px_rgba(113,56,204,0.45)]"
+              <Button size="lg" className="h-12 gap-2 rounded-xl px-8 text-base shadow-[0_10px_28px_-8px_rgba(113,56,204,0.55)]"
                 onClick={() => setView("map")} data-cursor="hover">
                 View Live Map <ArrowRight className="h-4 w-4" />
               </Button>

@@ -61,7 +61,7 @@ export function CursorGlow() {
           translateX: "-50%",
           translateY: "-50%",
           background:
-            "radial-gradient(circle, rgba(113,56,204,0.14) 0%, rgba(34,211,238,0.05) 38%, transparent 65%)",
+            "radial-gradient(circle, rgba(113,56,204,0.08) 0%, rgba(34,211,238,0.03) 38%, transparent 65%)",
           opacity: visible ? 1 : 0,
         }}
       />

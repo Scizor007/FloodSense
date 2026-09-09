@@ -57,77 +57,77 @@
 :root {
   --radius: 0.75rem;
 
-  /* FloodSense — Royal Violet (lifted) system */
-  --background: #1a1530;
-  --foreground: #ece7f8;
-  --card: #221d3a;
-  --card-foreground: #ece7f8;
-  --popover: #262040;
-  --popover-foreground: #ece7f8;
+  /* FloodSense — light lavender system (Royal Purple brand, light surfaces) */
+  --background: #f5f2fc;
+  --foreground: #251f45;
+  --card: #ffffff;
+  --card-foreground: #251f45;
+  --popover: #ffffff;
+  --popover-foreground: #251f45;
   --primary: #7138cc;
-  --primary-foreground: #f5f1fe;
-  --secondary: #2a2447;
-  --secondary-foreground: #d9d2f0;
-  --muted: #262040;
-  --muted-foreground: #a89ed3;
-  --accent: #332a5a;
-  --accent-foreground: #e2dbf9;
-  --destructive: #e5484d;
-  --border: #3a3160;
-  --input: #403670;
+  --primary-foreground: #ffffff;
+  --secondary: #ede7fa;
+  --secondary-foreground: #4a3f78;
+  --muted: #eae4f8;
+  --muted-foreground: #6e5fa8;
+  --accent: #e4dbf9;
+  --accent-foreground: #38306b;
+  --destructive: #dc2626;
+  --border: #e3daf5;
+  --input: #d9cdf0;
   --ring: #9d6bff;
   --chart-1: #7138cc;
-  --chart-2: #22d3ee;
-  --chart-3: #f97316;
-  --chart-4: #eab308;
-  --chart-5: #22c55e;
+  --chart-2: #0891b2;
+  --chart-3: #ea580c;
+  --chart-4: #ca8a04;
+  --chart-5: #16a34a;
 
-  --sidebar: #1c1734;
-  --sidebar-foreground: #d0c6ec;
+  --sidebar: #faf8ff;
+  --sidebar-foreground: #4a3f78;
   --sidebar-primary: #7138cc;
-  --sidebar-primary-foreground: #f5f1fe;
-  --sidebar-accent: #2a234a;
-  --sidebar-accent-foreground: #ece7f8;
-  --sidebar-border: #302855;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #ede7fa;
+  --sidebar-accent-foreground: #38306b;
+  --sidebar-border: #e6dff6;
   --sidebar-ring: #9d6bff;
 
-  /* risk scale — used consistently across every screen */
-  --risk-low: #22c55e;
-  --risk-moderate: #eab308;
-  --risk-high: #f97316;
-  --risk-severe: #ef4444;
-  --water: #22d3ee;
+  /* risk scale — used consistently across every screen (tuned for light surfaces) */
+  --risk-low: #16a34a;
+  --risk-moderate: #ca8a04;
+  --risk-high: #ea580c;
+  --risk-severe: #dc2626;
+  --water: #0891b2;
   --water-deep: #0e7490;
 
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 .dark {
-  --background: #1a1530;
-  --foreground: #ece7f8;
-  --card: #221d3a;
-  --card-foreground: #ece7f8;
-  --popover: #262040;
-  --popover-foreground: #ece7f8;
+  --background: #f5f2fc;
+  --foreground: #251f45;
+  --card: #ffffff;
+  --card-foreground: #251f45;
+  --popover: #ffffff;
+  --popover-foreground: #251f45;
   --primary: #7138cc;
-  --primary-foreground: #f5f1fe;
-  --secondary: #2a2447;
-  --secondary-foreground: #d9d2f0;
-  --muted: #262040;
-  --muted-foreground: #a89ed3;
-  --accent: #332a5a;
-  --accent-foreground: #e2dbf9;
-  --destructive: #e5484d;
-  --border: #3a3160;
-  --input: #403670;
+  --primary-foreground: #ffffff;
+  --secondary: #ede7fa;
+  --secondary-foreground: #4a3f78;
+  --muted: #eae4f8;
+  --muted-foreground: #6e5fa8;
+  --accent: #e4dbf9;
+  --accent-foreground: #38306b;
+  --destructive: #dc2626;
+  --border: #e3daf5;
+  --input: #d9cdf0;
   --ring: #9d6bff;
-  --sidebar: #1c1734;
-  --sidebar-foreground: #d0c6ec;
+  --sidebar: #faf8ff;
+  --sidebar-foreground: #4a3f78;
   --sidebar-primary: #7138cc;
-  --sidebar-primary-foreground: #f5f1fe;
-  --sidebar-accent: #2a234a;
-  --sidebar-accent-foreground: #ece7f8;
-  --sidebar-border: #302855;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #ede7fa;
+  --sidebar-accent-foreground: #38306b;
+  --sidebar-border: #e6dff6;
   --sidebar-ring: #9d6bff;
 }
 
@@ -144,15 +144,15 @@
     text-rendering: optimizeLegibility;
   }
   ::selection {
-    background: rgba(113, 56, 204, 0.45);
-    color: #fff;
+    background: #cbb4ff;
+    color: #251f45;
   }
 }
 
 /* ---------- custom scrollbars ---------- */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #403670 transparent;
+  scrollbar-color: #c9beee transparent;
 }
 ::-webkit-scrollbar {
   width: 8px;
@@ -162,19 +162,27 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #403670;
+  background: #c9beee;
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #4b4180;
+  background: #b3a4e6;
 }
 
 /* ---------- typography helpers ---------- */
 .font-display {
   font-family: var(--font-space-grotesk), var(--font-inter), sans-serif;
 }
+/* FloodSense — deep violet ombre */
 .text-gradient-violet {
-  background: linear-gradient(135deg, #ffffff 10%, #cbb4ff 55%, #7138cc 100%);
+  background: linear-gradient(120deg, #38266e 0%, #5b2eb8 45%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* Hyderabad — purple → pink ombre */
+.text-gradient-ombre {
+  background: linear-gradient(100deg, #7138cc 0%, #a855f7 48%, #ec4899 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -185,14 +193,15 @@
 
 /* ---------- surfaces ---------- */
 .glass-card {
-  background: linear-gradient(160deg, rgba(46, 37, 84, 0.75), rgba(33, 28, 58, 0.88));
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.94), rgba(251, 248, 255, 0.82));
   backdrop-filter: blur(14px);
-  border: 1px solid rgba(148, 118, 220, 0.18);
+  border: 1px solid rgba(113, 56, 204, 0.14);
+  box-shadow: 0 10px 30px -18px rgba(66, 32, 130, 0.28);
 }
 .panel-grid-bg {
   background-image:
-    linear-gradient(rgba(113, 56, 204, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(113, 56, 204, 0.06) 1px, transparent 1px);
+    linear-gradient(rgba(113, 56, 204, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(113, 56, 204, 0.07) 1px, transparent 1px);
   background-size: 44px 44px;
 }
 .noise-overlay::after {
@@ -200,7 +209,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.5;
+  opacity: 0.35;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.04'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
@@ -244,7 +253,7 @@
 .animate-float-slow { animation: float-slow 7s ease-in-out infinite; }
 .animate-marquee { animation: marquee-x 36s linear infinite; }
 .shimmer-bg {
-  background: linear-gradient(110deg, #262040 8%, #362b60 18%, #262040 33%);
+  background: linear-gradient(110deg, #ede7fa 8%, #f9f6ff 18%, #ede7fa 33%);
   background-size: 200% 100%;
   animation: shimmer 2.4s linear infinite;
 }
@@ -256,7 +265,6 @@
     inset: 0;
     pointer-events: none;
     z-index: 60;
-    mix-blend-mode: screen;
   }
 }
 .svg-marker {

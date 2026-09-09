@@ -41,10 +41,10 @@ function toSmoothPath(points: LatLng[]): string {
 
 function Pin({ lat, lng, label, kind }: { lat: number; lng: number; label: string; kind: "a" | "b" }) {
   const { x, y } = project(lat, lng);
-  const color = kind === "a" ? "#22d3ee" : "#7138cc";
+  const color = kind === "a" ? "#0891b2" : "#7138cc";
   return (
     <g transform={`translate(${x}, ${y})`}>
-      <circle r={11} fill="#221d3a" stroke={color} strokeWidth={2.5} />
+      <circle r={11} fill="#ffffff" stroke={color} strokeWidth={2.5} />
       <text
         y={4.5}
         textAnchor="middle"
@@ -61,14 +61,14 @@ function Pin({ lat, lng, label, kind }: { lat: number; lng: number; label: strin
         width={label.length * 6.8 + 16}
         height={17}
         rx={8.5}
-        fill="#2a2447ee"
-        stroke="#403670"
+        fill="#ffffff"
+        stroke="#d9cdf0"
       />
       <text
         y={-20.5}
         textAnchor="middle"
         fontSize={10.5}
-        fill="#ded3f8"
+        fill="#251f45"
         fontFamily="var(--font-inter), sans-serif"
         letterSpacing={0.4}
       >
@@ -98,7 +98,7 @@ export function RouteLayer({ route }: { route: RouteOverlayData }) {
       />
 
       {/* alternate route — recommended */}
-      <path d={altPath} fill="none" stroke="#2a1f47" strokeWidth={9} strokeLinecap="round" />
+      <path d={altPath} fill="none" stroke="#ffffff" strokeWidth={9} strokeLinecap="round" />
       <path
         id={altId}
         d={altPath}
@@ -111,12 +111,12 @@ export function RouteLayer({ route }: { route: RouteOverlayData }) {
       />
 
       {/* vehicle travelling the alternate */}
-      <circle r={5.5} fill="#ffffff">
+      <circle r={5.5} fill="#7138cc">
         <animateMotion dur="5.5s" repeatCount="indefinite" rotate="auto">
           <mpath href={`#${altId}`} />
         </animateMotion>
       </circle>
-      <circle r={9} fill="#22d3ee" opacity={0.25}>
+      <circle r={9} fill="#0891b2" opacity={0.25}>
         <animateMotion dur="5.5s" repeatCount="indefinite" rotate="auto">
           <mpath href={`#${altId}`} />
         </animateMotion>

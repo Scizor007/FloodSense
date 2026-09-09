@@ -16,9 +16,9 @@ import type { FloodReport, ReportStatus } from "@/lib/flood/types";
 import { ScreenHeader } from "../shared/risk-widgets";
 
 const STATUS_META: Record<ReportStatus, { label: string; color: string; icon: React.ElementType }> = {
-  pending: { label: "Pending", color: "#eab308", icon: Clock },
-  verified: { label: "Verified", color: "#22d3ee", icon: BadgeCheck },
-  resolved: { label: "Resolved", color: "#22c55e", icon: Wrench },
+  pending: { label: "Pending", color: "#ca8a04", icon: Clock },
+  verified: { label: "Verified", color: "#0891b2", icon: BadgeCheck },
+  resolved: { label: "Resolved", color: "#16a34a", icon: Wrench },
 };
 
 function PhotoThumb({ report }: { report: FloodReport }) {

@@ -88,24 +88,24 @@ export const RISK_META: Record<
   RiskLevel,
   { label: string; color: string; textClass: string }
 > = {
-  low: { label: "Low", color: "#22c55e", textClass: "text-risk-low" },
-  moderate: { label: "Moderate", color: "#eab308", textClass: "text-risk-moderate" },
-  high: { label: "High", color: "#f97316", textClass: "text-risk-high" },
-  severe: { label: "Severe", color: "#ef4444", textClass: "text-risk-severe" },
+  low: { label: "Low", color: "#16a34a", textClass: "text-risk-low" },
+  moderate: { label: "Moderate", color: "#ca8a04", textClass: "text-risk-moderate" },
+  high: { label: "High", color: "#ea580c", textClass: "text-risk-high" },
+  severe: { label: "Severe", color: "#dc2626", textClass: "text-risk-severe" },
 };
 
 export const REPORT_SEVERITY_META: Record<
   ReportSeverity,
   { label: string; color: string }
 > = {
-  ankle: { label: "Ankle-deep", color: "#eab308" },
-  knee: { label: "Knee-deep", color: "#f97316" },
-  impassable: { label: "Impassable", color: "#ef4444" },
+  ankle: { label: "Ankle-deep", color: "#ca8a04" },
+  knee: { label: "Knee-deep", color: "#ea580c" },
+  impassable: { label: "Impassable", color: "#dc2626" },
 };
 
 export const ALERT_META: Record<AlertLevel, { color: string; label: string }> = {
-  severe: { color: "#ef4444", label: "Severe" },
-  high: { color: "#f97316", label: "High" },
-  moderate: { color: "#eab308", label: "Moderate" },
-  info: { color: "#22d3ee", label: "Info" },
+  severe: { color: "#dc2626", label: "Severe" },
+  high: { color: "#ea580c", label: "High" },
+  moderate: { color: "#ca8a04", label: "Moderate" },
+  info: { color: "#0891b2", label: "Info" },
 };

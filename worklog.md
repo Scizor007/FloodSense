@@ -65,3 +65,28 @@ Stage Summary:
 - All fake-status/prototype jargon removed; copy now reads human and product-like.
 - Primary buttons smoothly invert to white bg + black text on hover (300ms).
 - Dev server healthy at port 3000; src/ has 0 TS errors.
+
+---
+Task ID: 3
+Agent: Super Z (main agent)
+Task: User follow-up refinements: (1) website still too dark — wants very light purple background on every page, (2) still reads AI-made — clean remaining machine-y copy, (3) add ombre gradient effect to the "Hyderabad" hero text.
+
+Work Log:
+- Replaced the entire palette in globals.css (:root + .dark) with a light lavender system: background #F5F2FC, foreground #251F45, cards/popovers white, secondary/muted/accent lavender tints, borders #E3DAF5; color-scheme: light; removed class="dark" from <html>; themeColor #F5F2FC.
+- Risk scale + water re-tuned for light surfaces (green-600 #16A34A / amber-600 #CA8A04 / orange-600 #EA580C / red-600 #DC2626 / cyan-600 #0891B2) in CSS vars AND RISK_META/REPORT_SEVERITY_META/ALERT_META hexes so SVG + text stay legible.
+- Added .text-gradient-ombre (purple #7138CC → violet #A855F7 → pink #EC4899) applied to the "Hyderabad" hero word; FloodSense word now uses a deep-violet ombre (.text-gradient-violet reworked).
+- Converted hyderabad-map.tsx to light basemap: bg #F3EFFB, grid #E6DEF7, lakes light-blue gradient + #6CB6D8 strokes, river #38A8D8 family, roads lavender scale (#A98FE0 NH / #C4B1EC inner / #D8CBF3 arterials), markers white-stroked with white score text + drop-shadow, tooltips white bg + dark text, rain lines #5BB8E8, route gradient end #0891B2.
+- route-overlay.tsx: white pin circles + white label chips (dark text), white route halo, purple vehicle dot; risk-widgets gauge track/severity-off #E7DFF5; alerts bubbles bg-card (white) + darker channel colors; feed status colors darker; report steps accents darker.
+- glass-card → white translucent gradient + soft violet shadow; panel-grid 0.07; noise 0.35; scrollbar lavender; selection #CBB4FF; cursor-glow blend normal + softer aura (screen blend removed — invisible on light bg).
+- De-AI-ified remaining copy: eyebrows stripped of "· suffix" jargon (Around me, Community reporting, Citizen alerts), "(Gemini)" removed, "zoomed city model" → "zoomed to", favicon tile #13101F → #F5F2FC; nav desc /70 → /85 and routeHint text-water/90 → full for contrast.
+- Softened neon glows to natural shadows (logo, nav pill, hero CTAs, step icons) — big glow = AI look.
+
+Verification (agent-browser, 1440x900 + 390x844):
+- body bg rgb(245,242,252) on every screen; map svg #F3EFFB; sidebar #FAF8FF; alert bubbles white.
+- Hyderabad ombre computed: linear-gradient(100deg, #7138CC→#A855F7→#EC4899) with background-clip:text.
+- Button purple/white with 0.3s transition intact; Run Prediction flow works (alerts generated, unread badge updates); contrast audit (WCAG walk) = ALL PASS; tsc 0 errors in src; 0 console/page errors; mobile 390px no horizontal scroll; demo data reset to fresh state.
+
+Stage Summary:
+- Full light-purple theme delivered: very light lavender page backgrounds on all 6 screens + boot splash, white glass surfaces, Royal Purple brand + ombre hero text intact, risk scale preserved but light-legible.
+- Copy reads product-like; favicon, glows, and chrome match the light identity.
+- Dev server healthy at port 3000; user preview link unchanged.

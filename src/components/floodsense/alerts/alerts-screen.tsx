@@ -20,9 +20,9 @@ const CHANNEL_ICON: Record<FloodAlert["channel"], React.ElementType> = {
 };
 
 const CHANNEL_COLOR: Record<FloodAlert["channel"], string> = {
-  SMS: "#22d3ee",
-  WhatsApp: "#25d366",
-  Push: "#9d6bff",
+  SMS: "#0891b2",
+  WhatsApp: "#1da851",
+  Push: "#7138cc",
 };
 
 function AlertBubble({ alert, index }: { alert: FloodAlert; index: number }) {
@@ -43,7 +43,7 @@ function AlertBubble({ alert, index }: { alert: FloodAlert; index: number }) {
         style={{ background: meta.color, boxShadow: `0 0 12px ${meta.color}80` }}
       />
       <div
-        className="ml-3 flex-1 rounded-2xl rounded-tl-md border border-border bg-[#241f42] p-4"
+        className="ml-3 flex-1 rounded-2xl rounded-tl-md border border-border bg-card p-4"
         style={{ boxShadow: `inset 3px 0 0 -1px ${meta.color}55` }}
       >
         <div className="mb-2 flex items-center gap-2">
@@ -72,7 +72,7 @@ function AlertBubble({ alert, index }: { alert: FloodAlert; index: number }) {
         {alert.routeHint && (
           <div className="mt-3 flex items-center gap-2 rounded-lg border border-water/25 bg-water/5 px-3 py-2">
             <Route className="h-3.5 w-3.5 shrink-0 text-water" />
-            <p className="text-xs text-water/90">{alert.routeHint}</p>
+            <p className="text-xs font-medium text-water">{alert.routeHint}</p>
           </div>
         )}
 
@@ -101,7 +101,7 @@ export function AlertsScreen() {
   return (
     <div className="space-y-5">
       <ScreenHeader
-        eyebrow="Citizen alerts · multi-channel"
+        eyebrow="Citizen alerts"
         title="Alerts"
         desc="Every escalation pushed to residents as SMS, WhatsApp and in-app notifications — with a way around it."
         right={
