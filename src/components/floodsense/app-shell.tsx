@@ -246,6 +246,10 @@ export function FloodSenseApp() {
     () => false
   );
 
+  useEffect(() => {
+    useFloodStore.getState().fetchInitialData();
+  }, []);
+
   if (!mounted) return <BootSplash />;
 
   const Screen = view === "landing" ? LandingScreen : SCREENS[view];

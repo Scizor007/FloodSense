@@ -10,7 +10,7 @@ import { HOTSPOTS } from "@/lib/flood/geo";
 import { severityFromScore } from "@/lib/flood/risk";
 import { RISK_META } from "@/lib/flood/types";
 import { Magnetic, CountUp } from "../shared/magnetic";
-import { HyderabadMap } from "../map/hyderabad-map";
+import { HyderabadMap } from "./illustrative-map";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
