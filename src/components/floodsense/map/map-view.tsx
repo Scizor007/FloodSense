@@ -19,6 +19,7 @@ import {
   ShieldCheck,
   CheckCircle2,
   AlertTriangle,
+  Layers,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
@@ -559,6 +560,102 @@ export function MapView() {
             </div>
           </div>
 
+          {/* Layer Controls in Left Sidebar */}
+          <div className="glass-card rounded-xl p-4">
+            <div className="mb-2.5 flex items-center justify-between border-b border-border/60 pb-2">
+              <span className="flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-wider text-foreground">
+                <Layers className="h-3.5 w-3.5 text-primary" />
+                Layer Controls
+              </span>
+              {gridLoading && (
+                <span className="flex items-center gap-1 font-mono text-[10px] text-primary">
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                  Grid Sync
+                </span>
+              )}
+            </div>
+
+            <div className="space-y-1.5 text-xs">
+              <label className="flex cursor-pointer items-center justify-between rounded-lg p-2 transition-colors hover:bg-secondary/60">
+                <span className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={mapLayers.predictedRisk}
+                    onChange={() =>
+                      setMapLayers((prev) => ({
+                        ...prev,
+                        predictedRisk: !prev.predictedRisk,
+                      }))
+                    }
+                    className="rounded border-border accent-primary"
+                  />
+                  <span className="font-medium text-foreground">Predicted Flood Risk</span>
+                </span>
+                <span className="font-mono text-[10px] text-muted-foreground">
+                  {gridPoints.length} cells
+                </span>
+              </label>
+
+              <label className="flex cursor-pointer items-center justify-between rounded-lg p-2 transition-colors hover:bg-secondary/60">
+                <span className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={mapLayers.historicalHotspots}
+                    onChange={() =>
+                      setMapLayers((prev) => ({
+                        ...prev,
+                        historicalHotspots: !prev.historicalHotspots,
+                      }))
+                    }
+                    className="rounded border-border accent-primary"
+                  />
+                  <span className="font-medium text-foreground">Historical Hotspots</span>
+                </span>
+                <span className="font-mono text-[10px] text-muted-foreground">
+                  {hotspots.length} zones
+                </span>
+              </label>
+
+              <label className="flex cursor-pointer items-center justify-between rounded-lg p-2 transition-colors hover:bg-secondary/60">
+                <span className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={mapLayers.citizenReports}
+                    onChange={() =>
+                      setMapLayers((prev) => ({
+                        ...prev,
+                        citizenReports: !prev.citizenReports,
+                      }))
+                    }
+                    className="rounded border-border accent-primary"
+                  />
+                  <span className="font-medium text-foreground">Citizen Reports</span>
+                </span>
+                <span className="font-mono text-[10px] text-cyan-600 dark:text-cyan-400 font-semibold">
+                  {reports.length} live
+                </span>
+              </label>
+
+              <div
+                className="flex items-center justify-between rounded-lg p-2 opacity-60"
+                title="Corridor vector line geometry is not yet supported by the backend."
+              >
+                <span className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={false}
+                    disabled
+                    className="cursor-not-allowed rounded border-border"
+                  />
+                  <span className="text-muted-foreground">Affected Corridors</span>
+                </span>
+                <span className="font-mono text-[9px] uppercase text-amber-600 dark:text-amber-400 font-bold">
+                  No geometry
+                </span>
+              </div>
+            </div>
+          </div>
+
           {/* Highest risk corridors list */}
           <div className="glass-card rounded-xl p-4">
             <p className="mb-2 flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground">
@@ -601,7 +698,99 @@ export function MapView() {
 
         {/* ================= MAP + RIGHT DETAIL COLUMN ================= */}
         <div className="grid gap-4 lg:grid-cols-[1fr_340px]">
-          <div className="glass-card relative overflow-hidden rounded-xl">
+          <div className="glass-card relative overflow-hidden rounded-xl flex flex-col">
+            {/* ================= HORIZONTAL LAYER CONTROLS (OUTSIDE MAP CANVAS) ================= */}
+            <div className="flex flex-wrap items-center justify-between gap-2.5 border-b border-border/70 bg-secondary/30 px-3.5 py-2 text-xs">
+              <div className="flex items-center gap-2">
+                <Layers className="h-4 w-4 text-primary" />
+                <span className="font-mono text-xs font-bold uppercase tracking-wider text-foreground">
+                  Layer Controls
+                </span>
+                {gridLoading && (
+                  <span className="flex items-center gap-1 font-mono text-[10.5px] text-primary">
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                    Grid Sync
+                  </span>
+                )}
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2 text-xs">
+                {/* Predicted Flood Risk */}
+                <label className="flex cursor-pointer items-center gap-1.5 rounded-lg border border-border/60 bg-card/80 px-2.5 py-1 transition-colors hover:bg-secondary">
+                  <input
+                    type="checkbox"
+                    checked={mapLayers.predictedRisk}
+                    onChange={() =>
+                      setMapLayers((prev) => ({
+                        ...prev,
+                        predictedRisk: !prev.predictedRisk,
+                      }))
+                    }
+                    className="rounded border-border accent-primary"
+                  />
+                  <span className="font-medium text-foreground">Predicted Flood Risk</span>
+                  <span className="font-mono text-[10px] text-muted-foreground">
+                    ({gridPoints.length} cells)
+                  </span>
+                </label>
+
+                {/* Historical Hotspots */}
+                <label className="flex cursor-pointer items-center gap-1.5 rounded-lg border border-border/60 bg-card/80 px-2.5 py-1 transition-colors hover:bg-secondary">
+                  <input
+                    type="checkbox"
+                    checked={mapLayers.historicalHotspots}
+                    onChange={() =>
+                      setMapLayers((prev) => ({
+                        ...prev,
+                        historicalHotspots: !prev.historicalHotspots,
+                      }))
+                    }
+                    className="rounded border-border accent-primary"
+                  />
+                  <span className="font-medium text-foreground">Historical Hotspots</span>
+                  <span className="font-mono text-[10px] text-muted-foreground">
+                    ({hotspots.length} zones)
+                  </span>
+                </label>
+
+                {/* Citizen Reports */}
+                <label className="flex cursor-pointer items-center gap-1.5 rounded-lg border border-border/60 bg-card/80 px-2.5 py-1 transition-colors hover:bg-secondary">
+                  <input
+                    type="checkbox"
+                    checked={mapLayers.citizenReports}
+                    onChange={() =>
+                      setMapLayers((prev) => ({
+                        ...prev,
+                        citizenReports: !prev.citizenReports,
+                      }))
+                    }
+                    className="rounded border-border accent-primary"
+                  />
+                  <span className="font-medium text-foreground">Citizen Reports</span>
+                  <span className="font-mono text-[10px] text-cyan-600 dark:text-cyan-400 font-semibold">
+                    ({reports.length} live)
+                  </span>
+                </label>
+
+                {/* Affected Corridors */}
+                <div
+                  className="flex items-center gap-1.5 rounded-lg border border-border/40 bg-card/40 px-2.5 py-1 text-[11px] text-muted-foreground opacity-60"
+                  title="Corridor vector line geometry is not yet supported by the backend."
+                >
+                  <input
+                    type="checkbox"
+                    checked={false}
+                    disabled
+                    className="cursor-not-allowed rounded border-border"
+                  />
+                  <span>Affected Corridors</span>
+                  <span className="font-mono text-[9px] uppercase text-amber-600 dark:text-amber-400 font-bold">
+                    No geometry
+                  </span>
+                </div>
+              </div>
+            </div>
+
             <div className="relative h-[430px] md:h-[540px] xl:h-[640px]">
               <HyderabadMap
                 hotspots={hotspots}
