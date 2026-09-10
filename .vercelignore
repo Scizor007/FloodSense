@@ -1,0 +1,30 @@
+# Python backend & environment (hosted separately)
+backend/.venv/
+backend/__pycache__/
+backend/uploads/
+backend/tests/
+*.py
+*.pyc
+*.joblib
+
+# Local dev logs & temporary files
+dev.log
+dev.out.log
+server.log
+dev-server.pid
+*.tmp
+*.log
+
+# Git & IDE
+.git/
+.github/
+.vscode/
+.idea/
+
+# Local databases
+db/
+*.db
+*.sqlite
+
+# Testing
+tests/
