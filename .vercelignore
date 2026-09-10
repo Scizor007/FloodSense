@@ -1,11 +1,8 @@
-# Python backend & environment (hosted separately)
-backend/.venv/
-backend/__pycache__/
-backend/uploads/
-backend/tests/
-*.py
-*.pyc
-*.joblib
+# Ignore entire Python backend (deployed separately on Render)
+backend/
+
+# Ignore Render deployment blueprint
+render.yaml
 
 # Local dev logs & temporary files
 dev.log
@@ -26,5 +23,10 @@ db/
 *.db
 *.sqlite
 
-# Testing
+# Testing, legacy scripts & non-frontend artifacts
 tests/
+.zscripts/
+mini-services/
+examples/
+upload/
+download/
