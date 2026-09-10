@@ -1,7 +1,10 @@
 from datetime import datetime
 from typing import Literal, Optional
 from pydantic import BaseModel, ConfigDict, Field
-from backend.models.common import PyObjectId
+try:
+    from backend.models.common import PyObjectId
+except ImportError:
+    from models.common import PyObjectId
 
 ReportSeverity = Literal["ankle", "knee", "impassable"]
 ReportStatus = Literal["pending", "verified", "rejected", "resolved"]
@@ -11,7 +14,8 @@ class ReportCreateModel(BaseModel):
     photo_url: Optional[str] = None
     lat: float
     lng: float
-    severity: ReportSeverity
+    severity: ReportSeverity = "knee"
+    citizen_reported_depth: Optional[str] = None
     note: Optional[str] = None
 
 class ReportStatusUpdateModel(BaseModel):
@@ -23,10 +27,13 @@ class ReportModel(BaseModel):
     photo_url: Optional[str] = None
     lat: float
     lng: float
-    severity: ReportSeverity
+    severity: str = "knee"
+    citizen_reported_depth: Optional[str] = None
     status: ReportStatus = "pending"
     ai_verified: bool = False
     ai_confidence: Optional[float] = None
+    ai_explanation: Optional[str] = None
+    image_usable: Optional[bool] = None
     corroboration_count: int = 0
     timestamp: datetime = Field(default_factory=datetime.utcnow)
     note: Optional[str] = None
@@ -42,10 +49,13 @@ class ReportResponse(BaseModel):
     photo_url: Optional[str] = None
     lat: float
     lng: float
-    severity: ReportSeverity
+    severity: str = "knee"
+    citizen_reported_depth: Optional[str] = None
     status: ReportStatus
     ai_verified: bool
     ai_confidence: Optional[float] = None
+    ai_explanation: Optional[str] = None
+    image_usable: Optional[bool] = None
     corroboration_count: int
     timestamp: datetime
     note: Optional[str] = None

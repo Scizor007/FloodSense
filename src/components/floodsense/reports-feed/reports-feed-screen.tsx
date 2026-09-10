@@ -13,6 +13,8 @@ import {
   Sparkles,
   RefreshCw,
   Loader2,
+  XCircle,
+  Users,
 } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -22,7 +24,7 @@ import { useFloodStore } from "@/lib/flood/store";
 import { timeAgo } from "@/lib/flood/risk";
 import { REPORT_SEVERITY_META } from "@/lib/flood/types";
 import type { FloodReport, ReportStatus } from "@/lib/flood/types";
-import { floodSenseApi } from "@/lib/flood/api";
+import { floodSenseApi, API_BASE_URL } from "@/lib/flood/api";
 import { ScreenHeader } from "../shared/risk-widgets";
 
 const STATUS_META: Record<
@@ -32,24 +34,29 @@ const STATUS_META: Record<
   pending: { label: "Pending", color: "#ca8a04", icon: Clock },
   verified: { label: "Verified", color: "#0891b2", icon: BadgeCheck },
   resolved: { label: "Resolved", color: "#16a34a", icon: Wrench },
+  rejected: { label: "Rejected", color: "#dc2626", icon: XCircle },
 };
 
 function PhotoThumb({ report }: { report: FloodReport }) {
   const [failed, setFailed] = useState(false);
   if (!report.photo || failed) {
     return (
-      <div className="flex h-[46px] w-[72px] items-center justify-center rounded-lg border border-border bg-gradient-to-br from-primary/25 via-secondary to-background">
+      <div className="flex h-[52px] w-[76px] items-center justify-center rounded-lg border border-border bg-gradient-to-br from-primary/25 via-secondary to-background">
         <ClipboardList className="h-4 w-4 text-muted-foreground" />
       </div>
     );
   }
+  const photoSrc = report.photo.startsWith("/uploads/")
+    ? `${API_BASE_URL}${report.photo}`
+    : report.photo;
+
   return (
     <img
-      src={report.photo}
+      src={photoSrc}
       alt={`Community report at ${report.location}`}
       loading="lazy"
       onError={() => setFailed(true)}
-      className="h-[46px] w-[72px] rounded-lg border border-border object-cover"
+      className="h-[52px] w-[76px] rounded-lg border border-border object-cover"
     />
   );
 }
@@ -114,8 +121,12 @@ export function ReportsFeedScreen() {
   }, [reports, tab, sort]);
 
   const counts = useMemo(() => {
-    const c = { all: reports.length, pending: 0, verified: 0, resolved: 0 };
-    reports.forEach((r) => (c[r.status] += 1));
+    const c = { all: reports.length, pending: 0, verified: 0, resolved: 0, rejected: 0 };
+    reports.forEach((r) => {
+      if (r.status in c) {
+        c[r.status] += 1;
+      }
+    });
     return c;
   }, [reports]);
 
@@ -124,7 +135,7 @@ export function ReportsFeedScreen() {
       <ScreenHeader
         eyebrow="Authority triage"
         title="Community Reports Feed"
-        desc="Citizen-submitted waterlogging reports, auto-verified by FloodSense Vision. Triage, dispatch and resolve."
+        desc="Citizen-submitted waterlogging reports with Gemini Multimodal Vision verification and 300m spatial corroboration. Triage, dispatch, and resolve."
         right={
           <div className="flex items-center gap-2">
             <Button
@@ -158,7 +169,7 @@ export function ReportsFeedScreen() {
       <div className="flex flex-wrap items-center gap-3">
         <Tabs value={tab} onValueChange={(v) => setTab(v as typeof tab)}>
           <TabsList>
-            {(["all", "pending", "verified", "resolved"] as const).map((t) => (
+            {(["all", "pending", "verified", "resolved", "rejected"] as const).map((t) => (
               <TabsTrigger key={t} value={t} className="gap-1.5 capitalize">
                 {t === "all" ? "All" : t}
                 <span className="rounded-full bg-secondary px-1.5 font-mono text-[10px] tabular-nums">
@@ -174,12 +185,12 @@ export function ReportsFeedScreen() {
       </div>
 
       {/* table header (desktop) */}
-      <div className="hidden grid-cols-[96px_1fr_150px_110px_150px_230px] gap-3 border-b border-border px-4 pb-2 font-mono text-[10px] uppercase tracking-wider text-muted-foreground lg:grid">
+      <div className="hidden grid-cols-[80px_1fr_160px_120px_130px_230px] gap-3 border-b border-border px-4 pb-2 font-mono text-[10px] uppercase tracking-wider text-muted-foreground lg:grid">
         <span>Photo</span>
-        <span>Location</span>
-        <span>Severity</span>
+        <span>Location & Evidence</span>
+        <span>Water Depth</span>
         <span>Reported</span>
-        <span>Status</span>
+        <span>Authority Status</span>
         <span className="text-right">Actions</span>
       </div>
 
@@ -198,11 +209,11 @@ export function ReportsFeedScreen() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.98 }}
                 transition={{ delay: i * 0.03, layout: { duration: 0.25 } }}
-                className="glass-card grid grid-cols-[auto_1fr] items-center gap-x-3 gap-y-3 rounded-xl p-3.5 transition-colors hover:border-primary/35 lg:grid-cols-[96px_1fr_150px_110px_150px_230px]"
+                className="glass-card grid grid-cols-[auto_1fr] items-center gap-x-3 gap-y-3 rounded-xl p-3.5 transition-colors hover:border-primary/35 lg:grid-cols-[80px_1fr_160px_120px_130px_230px]"
               >
                 <PhotoThumb report={r} />
 
-                <div className="min-w-0">
+                <div className="min-w-0 space-y-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <p className="truncate text-[13.5px] font-medium">
                       {r.location}
@@ -217,18 +228,45 @@ export function ReportsFeedScreen() {
                     )}
                   </div>
                   {r.note && (
-                    <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                    <p className="truncate text-xs text-muted-foreground">
                       {r.note}
                     </p>
                   )}
-                  {r.status !== "pending" && (
-                    <p className="mt-1 flex items-center gap-1 font-mono text-[10px] text-water">
-                      <Sparkles className="h-3 w-3" />
-                      {r.verifiedBy || "FloodSense Vision · auto"}
-                      {r.aiConfidence
-                        ? ` · ${Math.round(r.aiConfidence * 100)}% conf.`
-                        : ""}
-                      {r.waterDepthLabel ? ` · ${r.waterDepthLabel}` : ""}
+
+                  {/* Verification and Corroboration Metadata */}
+                  <div className="flex flex-wrap items-center gap-2 pt-0.5 font-mono text-[10px]">
+                    {r.aiVerified ? (
+                      <span className="inline-flex items-center gap-1 rounded bg-risk-low/10 px-1.5 py-0.5 text-risk-low">
+                        <Sparkles className="h-3 w-3" />
+                        AI Verified ({Math.round((r.aiConfidence || 0.85) * 100)}%)
+                      </span>
+                    ) : r.status === "rejected" ? (
+                      <span className="inline-flex items-center gap-1 rounded bg-destructive/10 px-1.5 py-0.5 text-destructive">
+                        <XCircle className="h-3 w-3" />
+                        AI Rejected
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 rounded bg-secondary px-1.5 py-0.5 text-muted-foreground">
+                        <Clock className="h-3 w-3" />
+                        Pending AI Verification
+                      </span>
+                    )}
+
+                    {r.corroborationCount && r.corroborationCount > 1 ? (
+                      <span className="inline-flex items-center gap-1 text-water">
+                        <Users className="h-3 w-3" />
+                        {r.corroborationCount} nearby corroborating reports
+                      </span>
+                    ) : (
+                      <span className="text-muted-foreground/80">
+                        1 report
+                      </span>
+                    )}
+                  </div>
+
+                  {r.aiExplanation && (
+                    <p className="text-[11px] italic text-muted-foreground/80 line-clamp-1">
+                      "{r.aiExplanation}"
                     </p>
                   )}
                 </div>
@@ -247,7 +285,7 @@ export function ReportsFeedScreen() {
                       }14`,
                     }}
                   >
-                    {REPORT_SEVERITY_META[r.severity]?.label || r.severity}
+                    {r.citizenReportedDepth || REPORT_SEVERITY_META[r.severity]?.label || r.severity}
                   </span>
                 </div>
 
@@ -287,15 +325,25 @@ export function ReportsFeedScreen() {
                   ) : (
                     <>
                       {r.status === "pending" && (
-                        <Button
-                          size="sm"
-                          variant="secondary"
-                          className="h-8 gap-1 text-xs"
-                          onClick={() => handleUpdateStatus(r.id, "verified")}
-                        >
-                          <CheckCircle2 className="h-3.5 w-3.5 text-water" />{" "}
-                          Mark Verified
-                        </Button>
+                        <div className="flex items-center gap-1">
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            className="h-8 gap-1 text-xs"
+                            onClick={() => handleUpdateStatus(r.id, "verified")}
+                          >
+                            <CheckCircle2 className="h-3.5 w-3.5 text-water" />{" "}
+                            Verify
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="h-8 gap-1 text-xs text-destructive hover:bg-destructive/10"
+                            onClick={() => handleUpdateStatus(r.id, "rejected")}
+                          >
+                            <XCircle className="h-3.5 w-3.5" /> Reject
+                          </Button>
+                        </div>
                       )}
                       {r.status === "verified" && (
                         <Button
@@ -314,6 +362,16 @@ export function ReportsFeedScreen() {
                           disabled
                         >
                           <CheckCircle2 className="h-3.5 w-3.5" /> Closed
+                        </Button>
+                      )}
+                      {r.status === "rejected" && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="h-8 gap-1 text-xs text-destructive"
+                          disabled
+                        >
+                          <XCircle className="h-3.5 w-3.5" /> Rejected
                         </Button>
                       )}
                     </>

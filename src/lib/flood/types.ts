@@ -36,7 +36,7 @@ export interface HotspotLive extends Hotspot {
 }
 
 export type ReportSeverity = "ankle" | "knee" | "impassable";
-export type ReportStatus = "pending" | "verified" | "resolved";
+export type ReportStatus = "pending" | "verified" | "rejected" | "resolved";
 
 export interface FloodReport {
   id: string;
@@ -45,13 +45,18 @@ export interface FloodReport {
   lat: number;
   lng: number;
   severity: ReportSeverity;
+  citizenReportedDepth?: string;
   note?: string;
   photo?: string;
   timestamp: number;
   status: ReportStatus;
   upvotes: number;
   source: "community" | "you";
+  aiVerified?: boolean;
   aiConfidence?: number;
+  aiExplanation?: string;
+  imageUsable?: boolean;
+  corroborationCount?: number;
   waterDepthLabel?: string;
   verifiedBy?: string;
 }

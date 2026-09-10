@@ -183,6 +183,7 @@ export interface ReportCreateModel {
   lat: number;
   lng: number;
   severity: string;
+  citizen_reported_depth?: string | null;
   note?: string | null;
 }
 
@@ -193,9 +194,12 @@ export interface ReportResponse {
   lat: number;
   lng: number;
   severity: string;
+  citizen_reported_depth?: string | null;
   status: string;
   ai_verified: boolean;
   ai_confidence?: number | null;
+  ai_explanation?: string | null;
+  image_usable?: boolean | null;
   corroboration_count: number;
   timestamp: string;
   note?: string | null;

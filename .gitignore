@@ -65,5 +65,8 @@ test
 prompt
 
 server.log
+# Uploaded files
+uploads/
+backend/uploads/
 # Skills directory
 /skills/

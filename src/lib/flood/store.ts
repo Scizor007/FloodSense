@@ -99,16 +99,17 @@ export function mapBackendHotspot(b: HotspotResponse): HotspotLive {
 export function mapBackendReport(r: ReportResponse): FloodReport {
   const severity = (r.severity as ReportSeverity) || "knee";
   const status =
-    r.status === "verified" || r.status === "resolved"
+    r.status === "verified" || r.status === "resolved" || r.status === "rejected"
       ? (r.status as ReportStatus)
       : "pending";
 
   const depth =
-    severity === "impassable"
+    r.citizen_reported_depth ||
+    (severity === "impassable"
       ? "≈ 70+ cm"
       : severity === "knee"
       ? "≈ 45–55 cm"
-      : "≈ 15–25 cm";
+      : "≈ 15–25 cm");
 
   return {
     id: r.id,
@@ -118,15 +119,24 @@ export function mapBackendReport(r: ReportResponse): FloodReport {
     lat: r.lat,
     lng: r.lng,
     severity,
+    citizenReportedDepth: r.citizen_reported_depth || undefined,
     note: r.note || undefined,
     photo: r.photo_url || undefined,
     timestamp: r.timestamp ? new Date(r.timestamp).getTime() : Date.now(),
     status,
     upvotes: r.corroboration_count > 0 ? r.corroboration_count * 2 : 1,
     source: "community",
+    aiVerified: r.ai_verified,
     aiConfidence: r.ai_confidence ?? undefined,
+    aiExplanation: r.ai_explanation ?? undefined,
+    imageUsable: r.image_usable ?? undefined,
+    corroborationCount: r.corroboration_count,
     waterDepthLabel: depth,
-    verifiedBy: r.ai_verified ? "FloodSense Vision · auto" : undefined,
+    verifiedBy: r.ai_verified
+      ? "FloodSense Vision · auto"
+      : r.status === "rejected"
+      ? "FloodSense Vision · rejected"
+      : "Pending authority review",
   };
 }
 
@@ -177,7 +187,7 @@ export const useFloodStore = create<FloodState>()(
       scenario: { intensity: 0, durationHours: 0 },
       predictionRanAt: null,
       selectedHotspotId: null,
-      reports: MOCK_REPORTS,
+      reports: [],
       alerts: MOCK_ALERTS,
       userLocalityId: "hitec",
       lastSync: Date.now(),
@@ -393,8 +403,7 @@ export const useFloodStore = create<FloodState>()(
             updates.isBackendLive = true;
           }
 
-          if (reportData && reportData.length > 0) {
-            // Keep local custom reports if added recently, prepend backend reports
+          if (reportData && Array.isArray(reportData)) {
             updates.reports = reportData.map(mapBackendReport);
           }
 
@@ -430,8 +439,8 @@ export const useFloodStore = create<FloodState>()(
 
       refreshReports: async () => {
         try {
-          const data = await floodSenseApi.getReports({ limit: 30 });
-          if (data.length > 0) {
+          const data = await floodSenseApi.getReports({ limit: 50 });
+          if (Array.isArray(data)) {
             set({
               reports: data.map(mapBackendReport),
               lastSync: Date.now(),

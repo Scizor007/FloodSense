@@ -71,6 +71,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Mount static uploads directory for citizen report images
+from fastapi.staticfiles import StaticFiles
+
+uploads_dir = BASE_DIR / "uploads"
+uploads_dir.mkdir(parents=True, exist_ok=True)
+app.mount("/uploads", StaticFiles(directory=str(uploads_dir)), name="uploads")
+
 
 # Global Exception Handling
 @app.exception_handler(Exception)

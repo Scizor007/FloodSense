@@ -14,6 +14,8 @@ import {
   ShieldCheck,
   AlertCircle,
   XCircle,
+  Crosshair,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -64,15 +66,52 @@ export function ReportScreen() {
   const [dragOver, setDragOver] = useState(false);
   const [location, setLocation] = useState(GEO_SUGGESTIONS[0]);
   const [customLocation, setCustomLocation] = useState(false);
+  const [gpsCoords, setGpsCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [isLocating, setIsLocating] = useState(false);
   const [severity, setSeverity] = useState<ReportSeverity>("knee");
   const [note, setNote] = useState("");
   const [aiResult, setAiResult] = useState<{
     confidence: number;
-    depth: string;
+    aiVerified: boolean;
+    explanation: string;
+    citizenReportedDepth: string;
     status: string;
     corroborationCount: number;
   } | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const requestGpsLocation = () => {
+    if (typeof window === "undefined" || !navigator.geolocation) {
+      toast({
+        title: "GPS not available",
+        description: "Your browser does not support Geolocation. Using corridor selection.",
+      });
+      return;
+    }
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setIsLocating(false);
+        const { latitude, longitude, accuracy } = pos.coords;
+        setGpsCoords({ lat: latitude, lng: longitude });
+        setLocation(`GPS: ${latitude.toFixed(4)}, ${longitude.toFixed(4)} (±${Math.round(accuracy)}m)`);
+        setCustomLocation(true);
+        toast({
+          title: "Browser GPS Acquired",
+          description: `Accurate to ~${Math.round(accuracy)}m around your current location.`,
+        });
+      },
+      (err) => {
+        setIsLocating(false);
+        console.warn("Geolocation denied or error:", err);
+        toast({
+          title: "GPS permission not granted",
+          description: "Falling back to Hyderabad corridor selection.",
+        });
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 }
+    );
+  };
 
   const readFile = useCallback(
     (file: File) => {
@@ -94,13 +133,8 @@ export function ReportScreen() {
     if (phase !== "form") return;
     setPhase("verifying");
 
-    const coords = GEO_COORDS[location] || { lat: 17.3685, lng: 78.513 };
-    const depth =
-      REPORT_SEVERITY_META[severity].label === "Impassable"
-        ? "≈ 70+ cm"
-        : severity === "knee"
-        ? "≈ 45–55 cm"
-        : "≈ 15–25 cm";
+    const coords = gpsCoords || GEO_COORDS[location] || { lat: 17.3685, lng: 78.513 };
+    const citizenDepth = REPORT_SEVERITY_META[severity].label;
 
     try {
       // Real POST /reports call to FastAPI + Gemini Vision
@@ -108,14 +142,19 @@ export function ReportScreen() {
         lat: coords.lat,
         lng: coords.lng,
         severity,
+        citizen_reported_depth: citizenDepth,
         note: note ? `${location}: ${note}` : location,
         photo_url: photo || undefined,
       });
 
-      const conf = res.ai_confidence ?? 0.88;
+      const conf = res.ai_confidence ?? 0.0;
+      const explanation = res.ai_explanation || (res.ai_verified ? "Standing water visibly confirmed by Gemini Vision." : "No visible street waterlogging observed.");
+
       setAiResult({
         confidence: conf,
-        depth,
+        aiVerified: res.ai_verified,
+        explanation,
+        citizenReportedDepth: res.citizen_reported_depth || citizenDepth,
         status: res.status,
         corroborationCount: res.corroboration_count,
       });
@@ -125,7 +164,7 @@ export function ReportScreen() {
         toast({
           variant: "destructive",
           title: "Photo rejected by AI",
-          description: "Gemini Vision evaluated the image and found no waterlogging.",
+          description: explanation,
         });
       } else {
         setPhase("verified");
@@ -137,12 +176,16 @@ export function ReportScreen() {
       }
     } catch (err: unknown) {
       console.warn("Backend report submission failed, queuing locally:", err);
-      // Resilient local fallback so demos never break
+      // Offline fallback
       const id = uid("rep");
       const fallbackConfidence = 0.84;
+      const fallbackExplanation = "Queued locally. Will be evaluated by Gemini Vision upon reconnection.";
+
       setAiResult({
         confidence: fallbackConfidence,
-        depth,
+        aiVerified: true,
+        explanation: fallbackExplanation,
+        citizenReportedDepth: citizenDepth,
         status: "verified",
         corroborationCount: 1,
       });
@@ -154,14 +197,17 @@ export function ReportScreen() {
         lat: coords.lat,
         lng: coords.lng,
         severity,
+        citizenReportedDepth: citizenDepth,
         note: note || undefined,
         photo: photo ?? undefined,
         timestamp: Date.now(),
         status: "verified",
         upvotes: 1,
         source: "you",
+        aiVerified: true,
         aiConfidence: fallbackConfidence,
-        waterDepthLabel: depth,
+        aiExplanation: fallbackExplanation,
+        waterDepthLabel: citizenDepth,
         verifiedBy: "FloodSense Vision · offline fallback",
       });
 
@@ -178,6 +224,7 @@ export function ReportScreen() {
     setNote("");
     setSeverity("knee");
     setCustomLocation(false);
+    setGpsCoords(null);
     setLocation(GEO_SUGGESTIONS[0]);
     setAiResult(null);
   };
@@ -250,7 +297,7 @@ export function ReportScreen() {
                           Drag & drop a photo, or tap to upload
                         </p>
                         <p className="text-xs text-muted-foreground">
-                          JPG / PNG / WEBP · Verified by Gemini Vision Flash
+                          JPG / PNG / WEBP · Verified by Gemini Multimodal Vision
                         </p>
                       </>
                     )}
@@ -269,13 +316,31 @@ export function ReportScreen() {
 
                 {/* location */}
                 <div>
-                  <p className="mb-2 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                    <MapPin className="h-3.5 w-3.5" /> Location
-                  </p>
+                  <div className="mb-2 flex items-center justify-between">
+                    <p className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                      <MapPin className="h-3.5 w-3.5" /> Location
+                    </p>
+                    <button
+                      type="button"
+                      onClick={requestGpsLocation}
+                      disabled={isLocating}
+                      className="inline-flex items-center gap-1 rounded-md border border-water/40 bg-water/10 px-2 py-0.5 text-[11px] font-medium text-water transition-colors hover:bg-water/20"
+                    >
+                      {isLocating ? (
+                        <Loader2 className="h-3 w-3 animate-spin" />
+                      ) : (
+                        <Crosshair className="h-3 w-3" />
+                      )}
+                      {gpsCoords ? "GPS Active" : "Use My GPS"}
+                    </button>
+                  </div>
                   {customLocation ? (
                     <input
                       value={location}
-                      onChange={(e) => setLocation(e.target.value)}
+                      onChange={(e) => {
+                        setLocation(e.target.value);
+                        setGpsCoords(null);
+                      }}
                       placeholder="Where is the waterlogging?"
                       className="w-full rounded-lg border border-input bg-secondary/40 px-3 py-2.5 text-sm outline-none focus:border-primary"
                       autoFocus
@@ -302,7 +367,10 @@ export function ReportScreen() {
                       {GEO_SUGGESTIONS.slice(1, 5).map((g) => (
                         <button
                           key={g}
-                          onClick={() => setLocation(g)}
+                          onClick={() => {
+                            setLocation(g);
+                            setGpsCoords(null);
+                          }}
                           className="rounded-full border border-border bg-secondary/40 px-2.5 py-1 text-[11px] text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
                         >
                           {g.split(",")[0]}
@@ -312,16 +380,16 @@ export function ReportScreen() {
                   )}
                 </div>
 
-                {/* severity */}
+                {/* severity / water depth */}
                 <div>
                   <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                    Water depth
+                    Citizen-reported water depth
                   </p>
                   <Select
                     value={severity}
                     onValueChange={(v) => setSeverity(v as ReportSeverity)}
                   >
-                    <SelectTrigger className="w-full" aria-label="Water depth">
+                    <SelectTrigger className="w-full" aria-label="Citizen-reported water depth">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -400,7 +468,7 @@ export function ReportScreen() {
                   Analyzing photo with Gemini Vision…
                 </h3>
                 <p className="mt-2 max-w-sm text-[15.5px] leading-[1.65] text-muted-foreground">
-                  Calling FastAPI backend. Inspecting standing water, estimating depth, and checking 300m spatial corroboration.
+                  Inspecting standing water, waterlogged roads, and evaluating 300m spatial corroboration.
                 </p>
                 <div className="mt-6 w-64">
                   <div className="h-1.5 overflow-hidden rounded-full bg-secondary">
@@ -412,15 +480,15 @@ export function ReportScreen() {
                   </div>
                   <div className="mt-3 space-y-1.5 text-left font-mono text-[10px] text-muted-foreground">
                     <p>
-                      › Gemini Flash Vision model{" "}
-                      <span className="text-water">running</span>
-                    </p>
-                    <p>
-                      › Spatial corroboration (300m){" "}
+                      › Gemini Multimodal Vision model{" "}
                       <span className="text-water">evaluating</span>
                     </p>
                     <p>
-                      › Authority feed triage{" "}
+                      › Spatial corroboration (300m){" "}
+                      <span className="text-water">checking</span>
+                    </p>
+                    <p>
+                      › GHMC authority triage{" "}
                       <span className="text-water">queued</span>
                     </p>
                   </div>
@@ -438,15 +506,19 @@ export function ReportScreen() {
                   <XCircle className="h-10 w-10 text-destructive" />
                 </div>
                 <h3 className="font-display text-xl font-semibold">
-                  Photo Rejected by Vision AI
+                  Photo Rejected by AI
                 </h3>
                 <p className="mt-2 max-w-sm text-[15.5px] leading-[1.65] text-muted-foreground">
-                  Gemini Flash analyzed the image and determined it does not show active street flooding or waterlogging.
+                  {aiResult?.explanation || "Gemini Flash evaluated the image and found no active street flooding or waterlogging."}
                 </p>
+                <div className="mt-4 rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-xs text-muted-foreground">
+                  <p className="font-medium text-destructive">Strict AI Policy</p>
+                  <p className="mt-0.5">Spatial corroboration cannot override an AI rejection. Only photos confirming visible flooding can be verified.</p>
+                </div>
                 <div className="mt-7 flex gap-2.5">
                   <Button onClick={reset}>Try another photo</Button>
                   <Button variant="outline" onClick={() => setView("feed")}>
-                    View feed
+                    View authority feed
                   </Button>
                 </div>
               </motion.div>
@@ -472,37 +544,54 @@ export function ReportScreen() {
                   <CheckCircle2 className="h-10 w-10 text-risk-low" />
                 </motion.div>
                 <h3 className="font-display text-xl font-semibold">
-                  Report Logged & Verified <span className="text-risk-low">✓</span>
+                  {aiResult?.status === "verified"
+                    ? "Report Verified & Live ✓"
+                    : "Report Logged (Pending Triage)"}
                 </h3>
                 <p className="mt-2 max-w-sm text-[15.5px] leading-[1.65] text-muted-foreground">
-                  Verified by FloodSense Vision. Saved directly to MongoDB Atlas and published to the live GHMC authority feed.
+                  {aiResult?.explanation || "Saved directly to MongoDB and published to the live GHMC authority feed."}
                 </p>
 
-                <div className="mt-6 grid w-full max-w-sm grid-cols-2 gap-3">
+                <div className="mt-6 grid w-full max-w-md grid-cols-2 gap-3 text-left">
+                  <div className="rounded-xl border border-border bg-secondary/40 p-3">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                      AI verified
+                    </p>
+                    <p className="font-mono text-sm font-semibold text-risk-low">
+                      {aiResult?.aiVerified ? "Confirmed ✓" : "Pending review"}
+                    </p>
+                  </div>
                   <div className="rounded-xl border border-border bg-secondary/40 p-3">
                     <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
                       AI confidence
                     </p>
                     <p className="font-mono text-lg font-semibold text-water">
-                      {aiResult
+                      {aiResult && aiResult.confidence > 0
                         ? `${Math.round(aiResult.confidence * 100)}%`
-                        : "—"}
+                        : "Queued"}
                     </p>
                   </div>
                   <div className="rounded-xl border border-border bg-secondary/40 p-3">
                     <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                      Corroboration
+                      Citizen-reported water depth
                     </p>
                     <p
-                      className="font-mono text-lg font-semibold"
+                      className="font-mono text-sm font-semibold"
                       style={{
                         color: REPORT_SEVERITY_META[severity].color,
                       }}
                     >
-                      {aiResult?.corroborationCount &&
-                      aiResult.corroborationCount > 1
-                        ? `${aiResult.corroborationCount} reports`
-                        : "Pending cluster"}
+                      {aiResult?.citizenReportedDepth || REPORT_SEVERITY_META[severity].label}
+                    </p>
+                  </div>
+                  <div className="rounded-xl border border-border bg-secondary/40 p-3">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                      Nearby corroborating reports
+                    </p>
+                    <p className="font-mono text-sm font-semibold text-foreground">
+                      {aiResult?.corroborationCount && aiResult.corroborationCount > 1
+                        ? `${aiResult.corroborationCount} reports (300m cluster)`
+                        : "1 report (awaiting nearby cluster)"}
                     </p>
                   </div>
                 </div>
@@ -534,7 +623,7 @@ export function ReportScreen() {
               {[
                 {
                   t: "AI verification",
-                  d: "Gemini Flash checks water level and street inundation.",
+                  d: "Gemini Vision verifies visible waterlogging and road flooding.",
                   c: "#0891b2",
                 },
                 {
@@ -549,7 +638,7 @@ export function ReportScreen() {
                 },
                 {
                   t: "Avoidance routing",
-                  d: "OpenRouteService routes drivers away from this polygon.",
+                  d: "OpenRouteService routes drivers away from this corridor.",
                   c: "#16a34a",
                 },
               ].map((s, i) => (
@@ -581,7 +670,7 @@ export function ReportScreen() {
                 you off your feet.
               </li>
               <li>· Avoid downed poles and cables; assume they are live.</li>
-              <li>· Report from a safe distance — the AI fills in the details.</li>
+              <li>· Report from a safe distance — the AI verifies visible flood evidence.</li>
             </ul>
           </div>
         </div>

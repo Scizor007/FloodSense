@@ -14,23 +14,31 @@ except ImportError:
 
 logger = logging.getLogger("floodsense.services.vision")
 
-PROMPT = """
-You are an expert AI flood damage and urban waterlogging assessment vision model for FloodSense Hyderabad.
-Analyze this image carefully to verify if it depicts real-world urban flooding, standing water, submerged streets, waterlogged roads, or flooded infrastructure.
+VERIFICATION_PROMPT = """
+You are an expert flood damage and urban waterlogging assessment vision model for FloodSense Hyderabad.
+Analyze this image carefully to determine if it shows visible evidence of urban flooding, waterlogging, inundated streets, or standing water on roads/infrastructure.
 
 You MUST respond ONLY with a valid JSON object with these exact keys:
 {
-  "is_flood": true or false,
-  "ai_confidence": float between 0.0 and 1.0 representing your confidence,
-  "ai_estimated_severity": "ankle" or "knee" or "impassable" or "none",
-  "reasoning": "brief 1-2 sentence description of water level and obstacles"
+  "flood_detected": true or false,
+  "confidence": float between 0.0 and 1.0,
+  "severity": "low" or "moderate" or "high" or "severe",
+  "explanation": "concise description of visible waterlogging evidence and road conditions",
+  "image_usable": true or false
 }
 
-Severity classification rules:
-- "ankle": Shallow water puddles, curb-level accumulation, vehicles driving normally.
-- "knee": Water reaching wheel hubs/car doors, pedestrians wading through water.
-- "impassable": Submerged underpasses, floating vehicles, stranded transit, water reaching hoods or buildings.
-- "none": When is_flood is false (dry streets, normal scenes, non-flood images).
+Rules:
+1. flood_detected: Set to true ONLY if there is visible evidence of waterlogging, street pooling, submerged roads, or active flood water. Set to false if roads are dry, normal weather/traffic, indoor scenes, or non-flood subjects.
+2. confidence: Float between 0.0 and 1.0 indicating your assessment certainty.
+3. severity: Evidence-based visual severity:
+   - "low": Shallow curb puddles, minor roadside pooling, traffic moving without disruption.
+   - "moderate": Substantial water covering portions of lanes, water reaching tire treads.
+   - "high": Water covering entire roadway, submerging wheel hubs or sidewalk curbs, traffic slowed or diverted.
+   - "severe": Deep inundation, submerged vehicles, flooded underpasses, impassable torrents.
+   If flood_detected is false, set severity to "low".
+4. explanation: 1-2 sentences summarizing visual evidence (e.g., "Standing water is visibly covering a substantial portion of the roadway.").
+5. image_usable: Set to false if the image is too blurry, completely dark, corrupt, or an unrelated screenshot/meme. Otherwise true.
+Do NOT attempt to guess an exact millimeter/centimeter physical water depth; focus on visible flooding evidence.
 """
 
 
@@ -58,51 +66,45 @@ async def fetch_image_bytes(image_input: Union[str, bytes]) -> tuple[bytes, str]
     raise ValueError("Invalid image input format. Expected HTTP URL, data URI, or raw bytes.")
 
 
-def _heuristic_verification(image_bytes: bytes) -> Dict[str, Any]:
-    """
-    Graceful fallback if GEMINI_API_KEY is not set.
-    Analyzes basic image color distribution (detects blue/grey muddy water tones).
-    """
+def _parse_gemini_json(raw_text: str) -> Optional[Dict[str, Any]]:
+    """Safely extract and parse JSON from Gemini output, handling code fences."""
+    if not raw_text:
+        return None
+    cleaned = raw_text.strip()
+    if cleaned.startswith("```"):
+        cleaned = re.sub(r"^```(?:json)?\s*", "", cleaned)
+        cleaned = re.sub(r"\s*```$", "", cleaned)
     try:
-        img = Image.open(BytesIO(image_bytes)).convert("RGB").resize((100, 100))
-        # Check image validity
-        w, h = img.size
-        logger.info(f"Heuristic image processing completed for {w}x{h} image.")
-        return {
-            "is_flood": True,
-            "ai_confidence": 0.88,
-            "ai_estimated_severity": "knee",
-            "reasoning": "Heuristic detection: Standing water and road reflection detected (GEMINI_API_KEY pending).",
-            "provider": "heuristic_fallback",
-        }
-    except Exception as e:
-        logger.warning(f"Heuristic image processing failed: {e}")
-        return {
-            "is_flood": True,
-            "ai_confidence": 0.80,
-            "ai_estimated_severity": "ankle",
-            "reasoning": "Default verification accepted (GEMINI_API_KEY pending).",
-            "provider": "fallback",
-        }
+        data = json.loads(cleaned)
+        if isinstance(data, dict):
+            return data
+    except json.JSONDecodeError as err:
+        logger.warning(f"Failed to parse Gemini output as JSON: {err}. Raw text: {raw_text[:200]}")
+    return None
 
 
 async def verify_flood_photo(image_input: Optional[Union[str, bytes]]) -> Dict[str, Any]:
     """
-    Verify citizen flood photograph using Google Gemini Vision (Flash model).
+    Verify citizen flood photograph using Google Gemini Multimodal Vision API.
+
     Returns:
         {
-            "is_flood": bool,
-            "ai_confidence": float,
-            "ai_estimated_severity": str ("ankle" | "knee" | "impassable" | "none"),
-            "reasoning": str
+            "flood_detected": bool,
+            "confidence": float (0.0 to 1.0),
+            "severity": str ("low" | "moderate" | "high" | "severe"),
+            "explanation": str,
+            "image_usable": bool,
+            "provider": str ("gemini" | "unconfigured" | "error" | "none")
         }
     """
     if not image_input:
         return {
-            "is_flood": False,
-            "ai_confidence": 0.0,
-            "ai_estimated_severity": "none",
-            "reasoning": "No image provided for verification.",
+            "flood_detected": False,
+            "confidence": 0.0,
+            "severity": "low",
+            "explanation": "No image provided with report.",
+            "image_usable": False,
+            "provider": "none",
         }
 
     try:
@@ -110,26 +112,53 @@ async def verify_flood_photo(image_input: Optional[Union[str, bytes]]) -> Dict[s
     except Exception as e:
         logger.error(f"Failed to load image for flood verification: {e}")
         return {
-            "is_flood": False,
-            "ai_confidence": 0.0,
-            "ai_estimated_severity": "none",
-            "reasoning": f"Failed to download/parse image: {str(e)}",
+            "flood_detected": False,
+            "confidence": 0.0,
+            "severity": "low",
+            "explanation": f"Unable to read or decode image file: {str(e)}",
+            "image_usable": False,
+            "provider": "error",
+        }
+
+    # Verify image integrity via PIL
+    try:
+        with Image.open(BytesIO(img_bytes)) as pil_img:
+            pil_img.verify()
+    except Exception as e:
+        logger.warning(f"Image corrupt or unreadable: {e}")
+        return {
+            "flood_detected": False,
+            "confidence": 0.0,
+            "severity": "low",
+            "explanation": "Uploaded image file appears corrupt or unreadable.",
+            "image_usable": False,
+            "provider": "error",
         }
 
     api_key = settings.GEMINI_API_KEY.strip()
     if not api_key:
-        logger.warning("GEMINI_API_KEY is not set in environment. Using heuristic image analyzer.")
-        return _heuristic_verification(img_bytes)
+        logger.warning("GEMINI_API_KEY is not set in environment. Storing unverified report for authority triage.")
+        return {
+            "flood_detected": False,
+            "confidence": 0.0,
+            "severity": "low",
+            "explanation": "Gemini API key is not configured in backend/.env. Report queued for manual authority review.",
+            "image_usable": True,
+            "provider": "unconfigured",
+        }
 
-    # Call Gemini Flash API using google-genai
+    # Call Gemini Multimodal API using google-genai
     try:
         from google import genai
         from google.genai import types
 
         client = genai.Client(api_key=api_key)
 
-        # Try gemini-2.5-flash, fallback to gemini-1.5-flash
-        models_to_try = ["gemini-2.5-flash", "gemini-1.5-flash"]
+        # Configurable model with fallbacks
+        primary_model = settings.GEMINI_MODEL or "gemini-2.5-flash"
+        fallback_models = [m for m in [primary_model, "gemini-2.5-flash", "gemini-1.5-flash"] if m]
+        # Deduplicate while preserving order
+        models_to_try = list(dict.fromkeys(fallback_models))
         last_error = None
 
         for model_name in models_to_try:
@@ -138,7 +167,7 @@ async def verify_flood_photo(image_input: Optional[Union[str, bytes]]) -> Dict[s
                     model=model_name,
                     contents=[
                         types.Part.from_bytes(data=img_bytes, mime_type=mime_type),
-                        PROMPT,
+                        VERIFICATION_PROMPT,
                     ],
                     config=types.GenerateContentConfig(
                         response_mime_type="application/json",
@@ -146,21 +175,49 @@ async def verify_flood_photo(image_input: Optional[Union[str, bytes]]) -> Dict[s
                     ),
                 )
                 if response and response.text:
-                    parsed = json.loads(response.text)
-                    return {
-                        "is_flood": bool(parsed.get("is_flood", False)),
-                        "ai_confidence": round(float(parsed.get("ai_confidence", 0.8)), 2),
-                        "ai_estimated_severity": parsed.get("ai_estimated_severity", "knee"),
-                        "reasoning": parsed.get("reasoning", "Verified by Gemini Vision."),
-                        "provider": f"gemini ({model_name})",
-                    }
+                    parsed = _parse_gemini_json(response.text)
+                    if parsed is not None:
+                        flood_detected = bool(parsed.get("flood_detected", False))
+                        confidence = round(float(parsed.get("confidence", 0.85 if flood_detected else 0.5)), 2)
+                        confidence = max(0.0, min(1.0, confidence))
+                        severity = str(parsed.get("severity", "moderate")).lower()
+                        if severity not in ["low", "moderate", "high", "severe"]:
+                            severity = "moderate"
+                        explanation = str(parsed.get(
+                            "explanation",
+                            "Visible waterlogging detected on roadway." if flood_detected else "No active street waterlogging observed."
+                        ))
+                        image_usable = bool(parsed.get("image_usable", True))
+
+                        return {
+                            "flood_detected": flood_detected,
+                            "confidence": confidence,
+                            "severity": severity,
+                            "explanation": explanation,
+                            "image_usable": image_usable,
+                            "provider": f"gemini ({model_name})",
+                        }
             except Exception as exc:
                 last_error = exc
                 logger.warning(f"Gemini call with {model_name} failed: {exc}. Trying next model...")
 
-        logger.error(f"All Gemini models failed: {last_error}. Using heuristic fallback.")
-        return _heuristic_verification(img_bytes)
+        logger.error(f"All Gemini models failed: {last_error}.")
+        return {
+            "flood_detected": False,
+            "confidence": 0.0,
+            "severity": "low",
+            "explanation": f"AI vision verification temporarily unavailable. Queued for authority review.",
+            "image_usable": True,
+            "provider": "error",
+        }
 
     except Exception as e:
-        logger.error(f"Gemini Vision API error: {e}. Using heuristic fallback.")
-        return _heuristic_verification(img_bytes)
+        logger.error(f"Gemini Vision API error: {e}")
+        return {
+            "flood_detected": False,
+            "confidence": 0.0,
+            "severity": "low",
+            "explanation": f"AI vision verification failed: {str(e)}. Queued for authority review.",
+            "image_usable": True,
+            "provider": "error",
+        }
